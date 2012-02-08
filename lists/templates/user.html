@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block content %}
+	<h1>{{ user.username }}</h1>
+	<ol id="lists">
+	{% for list in user.list_set.all %}
+		<li><a href="{{ list.get_absolute_user }}">{{ list }}</li>
+	{% endfor %}
+	</ol>
+{% endblock %}
