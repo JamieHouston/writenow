@@ -2,9 +2,9 @@
 {% block title %}{{ user.username }}{% endblock %}
 {% block content %}
 	<h1>{{ user.username }}</h1>
-	<ol id="lists">
+	<ul id="lists">
 	{% for list in user.list_set.all %}
-		<li><a href="{{ list.get_absolute_user }}">{{ list }}</li>
+		<li><a href="{{ list.get_absolute_url }}">{{ list }}</li>
 	{% endfor %}
-	</ol>
+	</ul>
 {% endblock %}

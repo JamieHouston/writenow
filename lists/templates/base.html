@@ -2,9 +2,24 @@
 <head>
 	<title>{% block title %}Write Now{% endblock %}</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-{% block header %}{% endblock %}
+<style>
+ul {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 1em;
+	text-indent: -1em;
+}
+</style>
+{% block header %}
+{% endblock %}
 </head>
 <body>
+{% if user.is_authenticated %}
+	Logged in as <a href="/l">{{ user.username }}</a> 
+	<a href="/accounts/logout">Logout</a>
+{% else %}
+	<a href="/accounts/login">Log In</a>
+{% endif %}
 {% block content %}{% endblock %}
 </body>
 </html>
