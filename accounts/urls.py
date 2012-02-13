@@ -1,11 +1,14 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('django.contrib.auth.views',
+            url(r'^$', 'login',
+                {'template_name': 'login.html'},
+                name='login'),
             url(r'^login/$',
-                'login', {'template_name': 'admin/login.html'},
+                'login', {'template_name': 'login.html'},
                 name='login'),
             url(r'^logout/$',
-                'logout',
+                'logout', {'next_page': '/'},
                 name='logout'),
             url(r'^password_change/$',
                 'password_change',

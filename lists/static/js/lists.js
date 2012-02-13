@@ -4,4 +4,5 @@ $(document).ready(function() {
 
 function addItem(){
 	var newItem = $('new_item').val();
+	$.ajaxSend()
 }

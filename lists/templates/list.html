@@ -5,6 +5,8 @@
 $(document).ready(function() {
 	$('#add_item').on('click', addItem);
 
+	$('input [type=checkbox]').on('change', removeItem)
+
 	$('#new_item').on('keyup', checkForNewItem);
 });
 

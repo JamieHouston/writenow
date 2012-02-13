@@ -2,9 +2,13 @@
 {% block title %}{{ user.username }}{% endblock %}
 {% block content %}
 	<h1>{{ user.username }}</h1>
-	<ul id="lists">
-	{% for list in user.list_set.all %}
-		<li><a href="{{ list.get_absolute_url }}">{{ list }}</li>
-	{% endfor %}
-	</ul>
+	{% if user.list_set.count == 0 %}
+		<div>No lists</div>
+	{% else %}
+		<ul id="lists">
+			{% for list in user.list_set.all %}
+				<li><a href="{{ list.get_absolute_url }}">{{ list }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 {% endblock %}

@@ -20,7 +20,7 @@ def register(request):
             user.save()
             user = authenticate(username=username, password=password)
             login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/l/')
     else:
         form = RegisterForm()
 
