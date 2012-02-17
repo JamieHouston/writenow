@@ -12,7 +12,12 @@ class List(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('lists.views.view_list', [str(self.name)])
+        return ('lists.views.view_list', (),
+        {
+            'user_name': self.user.username,
+            'list_name': self.name
+        }
+    )
 
 
 class Item(models.Model):
