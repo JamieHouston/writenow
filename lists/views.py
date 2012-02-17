@@ -41,6 +41,11 @@ def remove_item(request, user_name, list_name, pk):
     item.delete()
 
 
+def clear_list(request, user_name, list_name):
+    list = User.objects.get(username=user_name).list_set.get(name=list_name)
+    list.item_set.all().delete()
+
+
 def user_lists(request, user_name):
     user = request.user
     if not user.is_authenticated():
