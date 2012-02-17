@@ -17,7 +17,7 @@ def view_list(request, list_name):
 
     return render_to_response("list.html", {
             "list": list
-        },context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
 
 
 def add_item(request, list_name, new_item):
@@ -27,12 +27,17 @@ def add_item(request, list_name, new_item):
     item.save()
 
 
+def remove_item(request, list_name, pk):
+    item = Item.objects.get(pk=pk)
+    item.delete()
+
+
 def user_lists(request):
     user = request.user
     #user = get_or_create_user(user_name)
     return render_to_response("user.html", {
             "user": user
-        },context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
 
 
 def home(request):

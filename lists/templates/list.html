@@ -5,7 +5,7 @@
 $(document).ready(function() {
 	$('#add_item').on('click', addItem);
 
-	$('input [type=checkbox]').on('change', removeItem)
+	$('input[type=checkbox]').on('change', removeItem);
 
 	$('#new_item').on('keyup', checkForNewItem);
 });
@@ -19,6 +19,15 @@ function addItem(){
 	$.ajax('add/' + newItem);
 	$('#items').append('<li><input type="checkbox" name="complete">' + newItem + '</li>');
 	$('#new_item').val('');
+	$('#new_item').focus();
+}
+
+function removeItem(){
+	var $item = $(this);
+	$.ajax('remove/' + this.id);
+	$item.parent().fadeOut();
+	$('#new_item').focus();
+
 }
 </script>
 {% endblock %}
