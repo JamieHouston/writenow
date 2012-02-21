@@ -14,14 +14,6 @@ ul {
 {% endblock %}
 </head>
 <body>
-{% block user_info %}
-{% if user.is_authenticated %}
-	Logged in as <a href="/l">{{ user.username }}</a> 
-	<a href="/accounts/logout">Logout</a>
-{% else %}
-	<a href="/accounts/login">Log In</a> or <a href="/register">Register</a>
-{% endif %}
-{% endblock %}
 {% block content %}{% endblock %}
 </body>
 </html>
