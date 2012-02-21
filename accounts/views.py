@@ -9,7 +9,6 @@ from django.template import RequestContext
 
 @csrf_exempt
 def register(request):
-    errors = []
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if (form.is_valid()):
@@ -25,5 +24,5 @@ def register(request):
         form = RegisterForm()
 
     return render_to_response("register.html", {
-        "form": form},context_instance=RequestContext(request)
-    ) 
+        "form": form}, context_instance=RequestContext(request)
+    )
