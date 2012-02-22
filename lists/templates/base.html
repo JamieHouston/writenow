@@ -9,7 +9,18 @@ ul {
 	padding-left: 1em;
 	text-indent: -1em;
 }
+
+li.complete{
+	text-decoration: line-through;
+}
 </style>
+<script>
+function runOnEnter($target, action){
+	$target.on('keyup', function(e){
+		if (e.keyCode == 13) action();
+	});
+}
+</script>
 {% block header %}
 {% endblock %}
 </head>
