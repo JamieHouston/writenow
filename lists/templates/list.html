@@ -14,6 +14,8 @@ $(document).ready(function() {
 	runOnEnter($newItem, addItem);
 
 	$newItem.focus();
+
+	$('#items').sortable();
 });
 
 function addItem(){
@@ -37,9 +39,8 @@ function clearList(){
 function updateStatus(){
 	var $item = $(this);
 	if ($item.is(':checked')){
-		$item.parent().addClass('complete');
-		//$.ajax('remove/' + this.id);
-		//.fadeOut();
+		$item.parent().addClass('complete').delay(500).fadeOut();
+		$.ajax('remove/' + this.id)
 	}
 	else {
 		$item.parent().removeClass('complete');
