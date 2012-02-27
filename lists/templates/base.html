@@ -9,19 +9,22 @@ ul {
 	padding-left: 1em;
 	text-indent: -1em;
 }
+
+li.complete{
+	text-decoration: line-through;
+}
 </style>
+<script>
+function runOnEnter($target, action){
+	$target.on('keyup', function(e){
+		if (e.keyCode == 13) action();
+	});
+}
+</script>
 {% block header %}
 {% endblock %}
 </head>
 <body>
-{% block user_info %}
-{% if user.is_authenticated %}
-	Logged in as <a href="/l">{{ user.username }}</a> 
-	<a href="/accounts/logout">Logout</a>
-{% else %}
-	<a href="/accounts/login">Log In</a> or <a href="/register">Register</a>
-{% endif %}
-{% endblock %}
 {% block content %}{% endblock %}
 </body>
 </html>
