@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ list }}{% endblock %}
 {% block header %}
+<style>
+	#items { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	#items li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+	#items li span { position: absolute; margin-left: -1.3em; }
+</style>
 <script>
 $(document).ready(function() {
 	$('#add_item').on('click', addItem);
@@ -15,9 +20,14 @@ $(document).ready(function() {
 
 	$newItem.focus();
 
-	$('#items').sortable();
+	$('#items').sortable({
+		stop: updateOrder
+	});
 });
 
+function updateOrder(event, ui){
+
+}
 function addItem(){
 	var newItem = $('#new_item').val();
 	$.ajax('add/' + newItem, {
@@ -47,7 +57,6 @@ function updateStatus(){
 	}
 
 	$('#new_item').focus();
-
 }
 </script>
 {% endblock %}

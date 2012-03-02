@@ -23,7 +23,11 @@ class List(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=500)
     complete = models.BooleanField(default=False)
+    order = models.IntegerField(default=0)
     list = models.ForeignKey(List)
+
+    class Meta:
+            ordering = ('order',)
 
     def __unicode__(self):
         return unicode(self.name)
