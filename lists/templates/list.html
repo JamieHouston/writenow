@@ -3,6 +3,7 @@
 {% block header %}
 <style>
 	#items {margin-top:10px;}
+	#items label{line-height:25px;}
 	input {height:30px;}
 </style>
 <script>
@@ -65,7 +66,6 @@ function updateStatus(){
 			<div class="form-inline">
 				<input type="text" placeholder="new item" id="new_item" name="new_item" class="input-large">
 				<input type="button" id="add_item" value="add" class="btn btn-success">
-				<input type="button" id="clear_list" value="clear list" class="btn btn-warning">
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -80,4 +80,5 @@ function updateStatus(){
 				</div>
 			</div>
 		</div>
+		<div><input type="button" id="clear_list" value="clear list" class="btn btn-warning"></div>
 {% endblock %}
