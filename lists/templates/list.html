@@ -2,9 +2,8 @@
 {% block title %}{{ list }}{% endblock %}
 {% block header %}
 <style>
-	#items { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-	#items li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
-	#items li span { position: absolute; margin-left: -1.3em; }
+	#items {margin-top:10px;}
+	input {height:30px;}
 </style>
 <script>
 $(document).ready(function() {
@@ -33,7 +32,7 @@ function addItem(){
 	$.ajax('add/' + newItem, {
 		success: function(data){
 			item = JSON.parse(data);
-			$('#items').append('<li><input type="checkbox" name="complete" id="' + item.pk + '"> <label for="' + item.pk + '">' + item.name + '</label></li>');
+			$('#items').append('<label class="checkbox"><input type="checkbox" name="complete" id="' + item.pk + '">' + item.name + '</label>');
 			$('#new_item').val('');
 			$('#new_item').focus();
 		}
@@ -62,11 +61,23 @@ function updateStatus(){
 {% endblock %}
 {% block content %}
 	<h1>{{ list }} (by <a href="/{{ list.user.username }}/">{{ list.user }}</a>)</h1>
-	<div><input type="text" placeholder="new item" id="new_item" name="new_item"><input type="button" id="add_item" value="add"> <input type="button" id="clear_list" value="clear list"></div>
-	<ul id="items">
-	{% for item in list.item_set.all %}
-		<li><input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
-		<label for="{{ item.pk }}">{{ item }}</label></li>
-	{% endfor %}
-	</ul>
+		<div class="row-fluid">
+			<div class="form-inline">
+				<input type="text" placeholder="new item" id="new_item" name="new_item" class="input-large">
+				<input type="button" id="add_item" value="add" class="btn btn-success">
+				<input type="button" id="clear_list" value="clear list" class="btn btn-warning">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="row8">
+				<div class="controls" id="items">
+				{% for item in list.item_set.all %}
+					<label class="checkbox">
+						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
+						{{ item }}
+					</label>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
 {% endblock %}
