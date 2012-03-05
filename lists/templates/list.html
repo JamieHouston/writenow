@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ list }}{% endblock %}
 {% block header %}
-<style>
-	#items {margin-top:10px;}
-	#items label{line-height:25px;}
-	input {height:30px;}
-</style>
 <script>
 $(document).ready(function() {
 	$('#add_item').on('click', addItem);
