@@ -18,6 +18,8 @@ $(document).ready(function() {
 	$('#items').sortable({
 		stop: updateOrder
 	});
+
+	$('#choose_list').on('change', switchList)
 });
 
 function updateOrder(event, ui){
@@ -53,10 +55,29 @@ function updateStatus(){
 
 	$('#new_item').focus();
 }
+
+function switchList(){
+	var url = $('#choose_list').val();
+	if (url && url.length){
+		location.href = url;
+	}
+}
 </script>
 {% endblock %}
 {% block content %}
 	<h1>{{ list }} (by <a href="/{{ list.user.username }}/">{{ list.user }}</a>)</h1>
+	<div class="form-horizontal">
+		<div class="control-group">
+			<div>
+				<select id="choose_list">
+					<option>Change list to...</option>
+					{% for user_list in user_lists %}
+						<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
 		<div class="row-fluid">
 			<div class="form-inline">
 				<input type="text" placeholder="new item" id="new_item" name="new_item" class="input-large">

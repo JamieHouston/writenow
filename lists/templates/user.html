@@ -2,10 +2,17 @@
 {% block header %}
 <script>
 $(document).ready(function() {
-	$('#create_list').on('click', function(){
-		location.href = "/{{ user.username }}/" + $('#new_list').val();
+	$('#create_list').on('click', createList);
+
+	runOnEnter($('#new_list'), createList);
+	$('td.link_row').on('click', function(){
+		window.location = $(this).children('a')[0].href;
 	});
 });
+
+function createList(){
+	location.href = "/{{ user.username }}/" + $('#new_list').val();
+};
 </script>
 {% endblock %}
 {% block title %}{{ user.username }}{% endblock %}
@@ -16,7 +23,7 @@ $(document).ready(function() {
 	{% else %}
 		<table class="table table-striped table-bordered">
 			{% for list in user.list_set.all %}
-				<tr><td><a href="{{ list.get_absolute_url }}">{{ list }}</a></td></tr>
+				<tr><td class="link_row"><a href="{{ list.get_absolute_url }}">{{ list }}</a></td></tr>
 			{% endfor %}
 		</table>
 	{% endif %}
