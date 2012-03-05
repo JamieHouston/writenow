@@ -2,23 +2,30 @@
 {% block header %}
 <script>
 $(document).ready(function() {
-	$('#create_list').on('click', function(){
-		location.href = "/{{ user.username }}/" + $('#new_list').val();
+	$('#create_list').on('click', createList);
+
+	runOnEnter($('#new_list'), createList);
+	$('td.link_row').on('click', function(){
+		window.location = $(this).children('a')[0].href;
 	});
 });
+
+function createList(){
+	location.href = "/{{ user.username }}/" + $('#new_list').val();
+};
 </script>
 {% endblock %}
 {% block title %}{{ user.username }}{% endblock %}
 {% block content %}
 	<h1>{{ user.username }}</h1>
 	{% if user.list_set.count == 0 %}
-		<div>No lists</div>
+		<div class="warning">No lists</div>
 	{% else %}
-		<ul id="lists">
+		<table class="table table-striped table-bordered">
 			{% for list in user.list_set.all %}
-				<li><a href="{{ list.get_absolute_url }}">{{ list }}</a></li>
+				<tr><td class="link_row"><a href="{{ list.get_absolute_url }}">{{ list }}</a></td></tr>
 			{% endfor %}
-		</ul>
+		</table>
 	{% endif %}
 	<input type="text" id="new_list" placeholder="new list name"><input type="button" value="Create New List" id="create_list">
 {% endblock %}
