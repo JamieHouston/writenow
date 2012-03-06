@@ -1,0 +1,6 @@
+#items {margin-top:10px;}
+#items label{line-height:25px;}
+input {height:30px;}
+td.link_row {
+	cursor: pointer;
+}
