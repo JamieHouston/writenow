@@ -32,7 +32,7 @@ def add_item(request, user_name, list_name, new_item):
         list = List(name=list_name)
         list.user = user
         list.save()
-    item = Item(name=new_item)
+    item = Item(name=new_item, order=list.item_set.count())
     item.list = list
     item.save()
     result = {"name": item.name, "pk": item.pk}
