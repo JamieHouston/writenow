@@ -1,9 +1,6 @@
 <html>
 <head>
 	<title>{% block title %}Write Now{% endblock %}</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/mint-choc/jquery-ui.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet"/>
@@ -36,6 +33,12 @@ function runOnEnter($target, action){
 {% block content %}{% endblock %}
 	</div>
 
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}js/writenow.js"></script>
+{% block scripts %}{% endblock %}
 	<script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-29762319-1']);
