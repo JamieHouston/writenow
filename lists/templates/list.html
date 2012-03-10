@@ -9,12 +9,14 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block content %}
+
 	<div class="row-fluid">
 		<div class="offset1">
 			<h3>{{ list }} (by <a href="/{{ list.user.username }}/">{{ list.user }}</a>)</h1>
 		</div>
 	</div>
 	<div class="row-fluid">
+	{% if not request.mobile %}
 	<div class="span2">
 		<div class="well sidebar-nav">
 			<ul class="nav nav-list">
@@ -24,6 +26,7 @@ $(document).ready(function() {
 			</ul>
 		</div>
 	</div>
+	{% endif %}
 	<div class="span6">
 		<div class="row-fluid">
 			<div class="form-inline">
