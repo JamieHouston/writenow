@@ -8,6 +8,8 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$('#clear_list').on('click', clearList);
 
+			runOnEnter($('#new_list'), createList);
+
 			$('body').on('change', 'input[type=checkbox]', updateStatus);
 
 			$newItem = $('#new_item');
@@ -38,6 +40,8 @@ WriteNow.UI = WriteNow.UI || {};
 			$.ajax('add/' + newItem, {
 				success: function(data){
 					item = JSON.parse(data);
+					$('#empty_message').fadeOut();
+					$('#clear_list').show();
 					$('#items').append('<label class="checkbox"><input type="checkbox" name="complete" id="' + item.pk + '">' + item.name + '</label>');
 					$('#new_item').val('');
 					$('#new_item').focus();
@@ -48,6 +52,8 @@ WriteNow.UI = WriteNow.UI || {};
 		function clearList(){
 			$.ajax('clear/');
 			$('#items').empty();
+			$('#empty_message').fadeIn();
+			$('#clear_list').hide();
 			$('#new_item').focus();
 		}
 
@@ -55,7 +61,14 @@ WriteNow.UI = WriteNow.UI || {};
 			var $item = $(this);
 			if ($item.is(':checked')){
 				$item.parent().addClass('complete').delay(500).fadeOut();
-				$.ajax('remove/' + this.id);
+				$.ajax('remove/' + this.id, {
+					success: function(){
+						if ($('#items').children.length === 0){
+							$('#empty_message').fadeIn();
+							$('#clear_list').hide();
+						}
+					}
+				});
 			}
 			else {
 				$item.parent().removeClass('complete');
@@ -72,7 +85,13 @@ WriteNow.UI = WriteNow.UI || {};
 		}
 
 		function createList(){
-			location.href = "/{{ user.username }}/" + $('#new_list').val();
+			var pathArray = location.pathname.split('/');
+			pathArray.pop(); // remove the list name
+			if (location.pathname.substr(-1) === "/"){
+				pathArray.pop();
+			}
+			pathArray.push($('#new_list').val());
+			location.href = pathArray.join('/');
 		}
 	}).apply(WriteNow.UI);
 })(jQuery);
