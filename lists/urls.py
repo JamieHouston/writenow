@@ -3,7 +3,9 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('lists.views',
     url(r'^$', 'home'),
-    url(r'^(?P<user_name>[\w\s\d]+)/$', 'user_lists'),
+    url(r'^(?P<user_name>[\w\s\d]+)/$', 'view_list', {'list_name': 'inbox'}),
+    url(r'^(?P<user_name>[\w\s\d]+)/add/(?P<new_item>.+)$', 'add_item', {'list_name': 'inbox'}),
+    url(r'^(?P<user_name>[\w\s\d]+)/remove/(?P<pk>[\w\s\d]+)/$', 'remove_item', {'list_name': 'inbox'}),
     url(r'^(?P<user_name>[\w\s\d]+)/(?P<list_name>[\w\s\d]+)/$', 'view_list'),
     url(r'^(?P<user_name>[\w\s\d]+)/(?P<list_name>[\w\s\d]+)/add/(?P<new_item>.+)$', 'add_item'),
     url(r'^(?P<user_name>[\w\s\d]+)/(?P<list_name>[\w\s\d]+)/remove/(?P<pk>[\w\s\d]+)$', 'remove_item'),

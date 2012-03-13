@@ -1,18 +1,9 @@
 {% extends "base.html" %}
-{% block header %}
+{% block scripts %}
 <script>
 $(document).ready(function() {
-	$('#create_list').on('click', createList);
-
-	runOnEnter($('#new_list'), createList);
-	$('td.link_row').on('click', function(){
-		window.location = $(this).children('a')[0].href;
-	});
+	WriteNow.UI.initUserView();
 });
-
-function createList(){
-	location.href = "/{{ user.username }}/" + $('#new_list').val();
-};
 </script>
 {% endblock %}
 {% block title %}{{ user.username }}{% endblock %}
