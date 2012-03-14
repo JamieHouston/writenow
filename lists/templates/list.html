@@ -19,11 +19,12 @@ $(document).ready(function() {
 	<div class="row-fluid">
 	{% if not request.mobile %}
 	<div class="span2">
-		<div class="well sidebar-nav">
+		<div class="sidebar-nav">
 			<ul class="nav nav-list">
 			{% for user_list in user_lists %}
 				<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}</a></li>
 			{% endfor %}
+			<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
 			</ul>
 		</div>
 	</div>
@@ -38,7 +39,7 @@ $(document).ready(function() {
 		<div class="row-fluid">
 			<div class="row8">
 				<div class="controls" id="items">
-				{% for item in list.item_set.all %}
+				{% for item in list_items %}
 					<label class="checkbox">
 						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
 						{{ item }}
@@ -46,6 +47,10 @@ $(document).ready(function() {
 				{% endfor %}
 				</div>
 			</div>
+		</div>
+		<div id="empty_message" class="alert" style="display:none;">
+  			<a class="close" data-dismiss="alert">×</a>
+  			<strong>Note</strong> Once all items on a list are deleted, the list is deleted as well.  Adding a new item will add the list back.
 		</div>
 		<div><input type="button" id="clear_list" value="clear list" class="btn btn-warning"></div>
 	</div>
