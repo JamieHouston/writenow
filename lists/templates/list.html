@@ -47,7 +47,7 @@ $(document).ready(function() {
 				{% for item in list_items %}
 					<label class="checkbox">
 						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
-						{{ item }}
+						<span>{{ item }}</span>
 					</label>
 				{% endfor %}
 				</div>
