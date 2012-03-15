@@ -15,10 +15,15 @@ $(document).ready(function() {
 			<h3>{{ list }} (by <a href="/{{ list.user.username }}/">{{ list.user }}</a>)</h1>
 		</div>
 	</div>
-	it is {{ request.mobile }}
 	<div class="row-fluid">
-	{% if not request.mobile %}
 	<div class="span2">
+		{% if mobile %}
+			<select>
+			{% for user_list in user_lists %}
+				<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
+			{% endfor %}
+		</select>
+		{% else %}
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
 			{% for user_list in user_lists %}
@@ -27,8 +32,8 @@ $(document).ready(function() {
 			<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
 			</ul>
 		</div>
+			{% endif %}
 	</div>
-	{% endif %}
 	<div class="span6">
 		<div class="row-fluid">
 			<div class="form-inline">
