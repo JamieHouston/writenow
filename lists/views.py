@@ -19,7 +19,7 @@ def view_list(request, user_name, list_name):
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
 
-    user_lists = user.list_set.all()
+    user_lists = user.list_set.all().order_by('name')
     return render_to_response("list.html", {
             "list": list,
             "list_items": list.item_set.all(),

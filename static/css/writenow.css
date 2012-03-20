@@ -37,3 +37,8 @@ div.sidebar-nav{
 div.sidebar-nav span.badge{
 	margin-left:10px;
 }
+
+#user_name{
+	font-style: :italic;
+	font-weight: bolder;
+}

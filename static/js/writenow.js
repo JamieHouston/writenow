@@ -22,22 +22,13 @@ WriteNow.UI = WriteNow.UI || {};
 			$newItem.focus();
 
 			$('#items').sortable({
-				//connectWith: 'ul.nav-list',
 				handle: 'i.move-item',
 				stop: moveItem,
 				axis: 'y'
 			});
 
-			/*$('ul.nav-list').sortable({
-				receive: updateList
-			});
-*/
 			$('#choose_list').on('change', switchList);
 		};
-
-		function updateList(event, ui){
-
-		}
 
 		function moveItem(event, ui) {
 			var oldPos = ui.item.data('order');
@@ -62,11 +53,9 @@ WriteNow.UI = WriteNow.UI || {};
 			$.ajax('add/' + newItem, {
 				success: function(data){
 					item = JSON.parse(data);
-					$('#empty_message').fadeOut();
-					$('#clear_list').show();
 					$('#items').append('<label class="checkbox" data-order="' + item.order + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + '</span><div class="item-actions"><i class="icon-trash delete-item"></i><i class="icon-move move-item"></i></div></label>');
 					$('#new_item').val('');
-					$('#new_item').focus();
+					showListStatus();
 				}
 			});
 		}
@@ -74,23 +63,28 @@ WriteNow.UI = WriteNow.UI || {};
 		function clearList(){
 			$.ajax('clear/');
 			$('#items').empty();
-			$('#empty_message').fadeIn();
-			$('#clear_list').hide();
-			$('#new_item').focus();
+
+			showListStatus();
 		}
 
 		function deleteItem(){
 			var $container = $(this).parent();
 			var $chk = $container.siblings('input[type=checkbox]');
-			$.ajax('remove/' + $chk[0].id, {
-				success: function(){
-					if ($('#items').children.length === 0){
-						$('#empty_message').fadeIn();
-						$('#clear_list').hide();
-					}
-				}
-			});
+			$.ajax('remove/' + $chk[0].id);
 			$container.parents('label').remove();
+			showListStatus();
+		}
+
+		function showListStatus(){
+			if ($('#items').children().length === 0){
+				$('#empty_message').fadeIn();
+				$('#clear_list').hide();
+
+			} else {
+				$('#empty_message').fadeOut();
+				$('#clear_list').show();
+			}
+			$('#new_item').focus();
 		}
 
 		function updateStatus(){
@@ -119,13 +113,9 @@ WriteNow.UI = WriteNow.UI || {};
 		}
 
 		function createList(){
-			var pathArray = location.pathname.split('/');
-			pathArray.pop(); // remove the list name
-			if (location.pathname.substr(-1) === "/"){
-				pathArray.pop();
-			}
-			pathArray.push($('#new_list').val());
-			location.href = pathArray.join('/');
+			var userName = $('#user_name').text();
+			var newList = $('#new_list').val();
+			location.href = "/" + userName + "/" + newList + "/";
 		}
 	}).apply(WriteNow.UI);
 })(jQuery);
