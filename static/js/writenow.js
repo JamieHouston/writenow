@@ -10,7 +10,10 @@ WriteNow.UI = WriteNow.UI || {};
 
 			runOnEnter($('#new_list'), createList);
 
-			$('body').on('change', 'input[type=checkbox]', updateStatus);
+			$('body')
+				.on('change', 'input[type=checkbox]', updateStatus)
+				.on('click', 'i.delete-item', deleteItem);
+
 
 			$newItem = $('#new_item');
 
@@ -19,10 +22,31 @@ WriteNow.UI = WriteNow.UI || {};
 			$newItem.focus();
 
 			$('#items').sortable({
-				update: updateItemSort
+				//connectWith: 'ul.nav-list',
+				handle: 'i.move-item',
+				stop: moveItem,
+				axis: 'y'
 			});
+
+			/*$('ul.nav-list').sortable({
+				receive: updateList
+			});
+*/
 			$('#choose_list').on('change', switchList);
 		};
+
+		function updateList(event, ui){
+
+		}
+
+		function moveItem(event, ui) {
+			var oldPos = ui.item.data('order');
+			var newPos = ui.item.index();
+			var pk = ui.item.find('input[type=checkbox]')[0].id;
+			$.post('move/' + pk + '/',
+				{order: newPos + 1}
+			);
+		}
 
 		this.initUserView = function(){
 			$('#create_list').on('click', createList);
@@ -33,8 +57,6 @@ WriteNow.UI = WriteNow.UI || {};
 			});
 		};
 
-		function updateItemSort(){}
-
 		function addItem(){
 			var newItem = $('#new_item').val();
 			$.ajax('add/' + newItem, {
@@ -42,7 +64,7 @@ WriteNow.UI = WriteNow.UI || {};
 					item = JSON.parse(data);
 					$('#empty_message').fadeOut();
 					$('#clear_list').show();
-					$('#items').append('<label class="checkbox"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + '</span></label>');
+					$('#items').append('<label class="checkbox" data-order="' + item.order + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + '</span><div class="item-actions"><i class="icon-trash delete-item"></i><i class="icon-move move-item"></i></div></label>');
 					$('#new_item').val('');
 					$('#new_item').focus();
 				}
@@ -57,6 +79,20 @@ WriteNow.UI = WriteNow.UI || {};
 			$('#new_item').focus();
 		}
 
+		function deleteItem(){
+			var $container = $(this).parent();
+			var $chk = $container.siblings('input[type=checkbox]');
+			$.ajax('remove/' + $chk[0].id, {
+				success: function(){
+					if ($('#items').children.length === 0){
+						$('#empty_message').fadeIn();
+						$('#clear_list').hide();
+					}
+				}
+			});
+			$container.parents('label').remove();
+		}
+
 		function updateStatus(){
 			var $item = $(this);
 			var content = $item.next().html();
@@ -66,15 +102,7 @@ WriteNow.UI = WriteNow.UI || {};
 				return false;
 			}
 			if ($item.is(':checked')){
-				$item.parent().addClass('complete').delay(500).fadeOut();
-				$.ajax('remove/' + this.id, {
-					success: function(){
-						if ($('#items').children.length === 0){
-							$('#empty_message').fadeIn();
-							$('#clear_list').hide();
-						}
-					}
-				});
+				$item.parent().addClass('complete');
 			}
 			else {
 				$item.parent().removeClass('complete');

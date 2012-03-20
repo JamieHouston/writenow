@@ -22,17 +22,17 @@ $(document).ready(function() {
 			{% for user_list in user_lists %}
 				<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
 			{% endfor %}
-		</select>
+			</select>
 		{% else %}
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
-			{% for user_list in user_lists %}
-				<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}</a></li>
-			{% endfor %}
-			<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
+				{% for user_list in user_lists %}
+					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items }}</span></a></li>
+				{% endfor %}
+				<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
 			</ul>
 		</div>
-			{% endif %}
+		{% endif %}
 	</div>
 	<div class="span6">
 		<div class="row-fluid">
@@ -42,12 +42,16 @@ $(document).ready(function() {
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="row8">
+			<div class="row6">
 				<div class="controls" id="items">
 				{% for item in list_items %}
-					<label class="checkbox">
+					<label class="checkbox" data-order="{{ item.order }}">
 						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
 						<span>{{ item }}</span>
+						<div class="item-actions">
+							<i class="icon-trash delete-item"></i>
+							<i class="icon-move move-item"></i>
+						</div>
 					</label>
 				{% endfor %}
 				</div>

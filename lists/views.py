@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
@@ -33,7 +34,16 @@ def add_item(request, user_name, list_name, new_item):
     item = Item(name=new_item, order=list.item_set.count())
     item.list = list
     item.save()
-    result = {"name": item.name, "pk": item.pk}
+    result = {"name": item.name, "pk": item.pk, "order": item.order}
+    return HttpResponse(simplejson.dumps(result))
+
+
+@csrf_exempt
+def move_item(request, pk, list_name, user_name):
+    after = request.POST['order']
+    item = Item.objects.get(pk=pk)
+    item.move(after)
+    result = {"name": item.name, "pk": item.pk, "order": item.order}
     return HttpResponse(simplejson.dumps(result))
 
 
@@ -54,6 +64,7 @@ def clear_list(request, user_name, list_name):
     list = get_or_create_list(user, list_name)
     list.item_set.all().delete()
     list.delete()
+    return HttpResponse(simplejson.dumps({"status": "ok"}))
 
 
 def get_or_create_user(user_name):
