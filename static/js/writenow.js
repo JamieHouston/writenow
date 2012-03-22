@@ -90,9 +90,9 @@ WriteNow.UI = WriteNow.UI || {};
 		function updateStatus(){
 			var $item = $(this);
 			var content = $item.next().html();
-			var pk = $item.attr('id');
+			var pk = $item.prop('id');
 			if (content.startsWith('http')  && confirm('open link?')){
-				$item.attr('checked', false);
+				$item.removeProp('checked');
 				window.open(content);
 				return false;
 			}

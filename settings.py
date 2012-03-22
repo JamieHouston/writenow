@@ -115,7 +115,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     #"django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    'mobiledetector.context_processors.mobile',
+    "mobiledetector.context_processors.mobile",
 )
 
 INSTALLED_APPS = (
