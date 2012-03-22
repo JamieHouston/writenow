@@ -17,7 +17,7 @@ $(document).ready(function() {
 	</div>
 	<div class="row-fluid">
 	<div class="span2">
-		{% if not mobile %}
+		{% if mobile %}
 			<select class="span2" id="choose_list">
 				<option>Change to...</option>
 			{% for user_list in user_lists %}
