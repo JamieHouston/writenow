@@ -59,6 +59,18 @@ def remove_item(request, user_name, list_name, pk):
         return HttpResponse(simplejson.dumps({"status": "fail"}))
 
 
+@csrf_exempt
+def update_item(request, user_name, list_name, pk):
+    item = Item.objects.get(pk=pk)
+    if Item:
+        complete = request.POST['complete']
+        item.complete = complete
+        item.save()
+        return HttpResponse(simplejson.dumps({"status": "ok"}))
+    else:
+        return HttpResponse(simplejson.dumps({"status": "fail"}))        
+
+
 def clear_list(request, user_name, list_name):
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)

@@ -90,18 +90,22 @@ WriteNow.UI = WriteNow.UI || {};
 		function updateStatus(){
 			var $item = $(this);
 			var content = $item.next().html();
+			var pk = $item.attr('id');
 			if (content.startsWith('http')  && confirm('open link?')){
 				$item.attr('checked', false);
 				window.open(content);
 				return false;
 			}
-			if ($item.is(':checked')){
+			var complete = $item.is(':checked');
+			if (complete){
 				$item.parent().addClass('complete');
 			}
 			else {
 				$item.parent().removeClass('complete');
 			}
-
+			$.post('update/' + pk + '/',
+				{complete: complete}
+			);
 			$('#new_item').focus();
 		}
 

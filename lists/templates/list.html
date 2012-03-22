@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 	<div class="row-fluid">
 		<div class="offset1">
-			<h3>{{ list }} (from <span id="user_name">{{ list.user }}</span>)</h1>
+			<h3>{{ list }} (created by <span id="user_name">{{ list.user }}</span>)</h1>
 		</div>
 	</div>
 	<div class="row-fluid">
@@ -45,9 +45,9 @@ $(document).ready(function() {
 			<div class="row6">
 				<div class="controls" id="items">
 				{% for item in list_items %}
-					<label class="checkbox" data-order="{{ item.order }}">
-						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">
-						<span>{{ item }}</span>
+					<label class="checkbox" data-order="{{ item.order }}" {% if item.complete %}  class="complete" {% endif %}>
+						<input type="checkbox" {% if item.complete %} checked="checked" {% endif %} name="complete" id="{{ item.pk }}">
+						<span {% if item.complete %}  class="complete" {% endif %}>{{ item }}</span>
 						<div class="item-actions">
 							<i class="icon-trash delete-item"></i>
 							<i class="icon-move move-item"></i>
