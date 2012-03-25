@@ -18,7 +18,8 @@ $(document).ready(function() {
 	<div class="row-fluid">
 	<div class="span2">
 		{% if mobile %}
-			<select>
+			<select class="span2" id="choose_list">
+				<option>Change to...</option>
 			{% for user_list in user_lists %}
 				<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
 			{% endfor %}
