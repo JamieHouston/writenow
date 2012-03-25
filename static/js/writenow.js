@@ -18,8 +18,14 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$newItem.focus();
 
-			$('#items').sortable({
-				update: updateItemSort
+			$('#items, .nav-list').sortable({
+			    connectWith: ".connectedSortable",
+			    receive: function(e, ui) {
+			        alert(ui.item.closest('ul').attr('id'));
+			    },
+			    stop: function(e, ui){
+					alert(ui.item);
+    			}
 			});
 			$('#choose_list').on('change', switchList);
 		};
@@ -33,7 +39,10 @@ WriteNow.UI = WriteNow.UI || {};
 			});
 		};
 
-		function updateItemSort(){}
+		function updateItemSort(event, ui){
+			var items = $(this).sortable('toArray');
+			$.ajax('update/');
+		}
 
 		function addItem(){
 			var newItem = $('#new_item').val();

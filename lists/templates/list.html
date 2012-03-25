@@ -19,7 +19,7 @@ $(document).ready(function() {
 	{% if not request.mobile %}
 	<div class="span2">
 		<div class="sidebar-nav">
-			<ul class="nav nav-list">
+			<ul class="nav nav-list connectedSortable">
 			{% for user_list in user_lists %}
 				<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}</a></li>
 			{% endfor %}
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		</div>
 		<div class="row-fluid">
 			<div class="row8">
-				<div class="controls" id="items">
+				<div class="controls connectedSortable" id="items">
 				{% for item in list_items %}
 					<label class="checkbox">
 						<input type="checkbox" {% if item.complete %} checked="checked" class="complete" {% endif %} name="complete" id="{{ item.pk }}">

@@ -1,4 +1,7 @@
-#items {margin-top:10px;}
+#items {
+	margin-top:10px; 
+	cursor:move;
+}
 #items label{line-height:25px;}
 input {height:30px;}
 td.link_row {
