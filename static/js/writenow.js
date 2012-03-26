@@ -106,7 +106,6 @@ WriteNow.UI = WriteNow.UI || {};
 			$.post('update/' + pk + '/',
 				{complete: complete}
 			);
-			$('#new_item').focus();
 		}
 
 		function switchList(){
