@@ -63,12 +63,12 @@ def remove_item(request, user_name, list_name, pk):
 def update_item(request, user_name, list_name, pk):
     item = Item.objects.get(pk=pk)
     if Item:
-        complete = request.POST['complete']
+        complete = request.POST['complete'] == "true"
         item.complete = complete
         item.save()
         return HttpResponse(simplejson.dumps({"status": "ok"}))
     else:
-        return HttpResponse(simplejson.dumps({"status": "fail"}))        
+        return HttpResponse(simplejson.dumps({"status": "fail"}))
 
 
 def clear_list(request, user_name, list_name):
@@ -80,13 +80,6 @@ def clear_list(request, user_name, list_name):
 
 
 def get_or_create_user(user_name):
-    #user = request.user
-    #if not user.is_authenticated():
-    #    user = User.objects.filter(username=user_name)
-    #    if len(user) == 1:
-    #        user = user[0]
-    #    else:
-    #        user = None
     user = User.objects.filter(username=user_name)
     if len(user) == 0:
         user = User.objects.create_user(user_name, 'test@test.com', 'xyzzy')
