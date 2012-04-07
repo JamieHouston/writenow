@@ -11,4 +11,4 @@ urlpatterns = patterns('',
 #    url(r'^l/', include('lists.urls')),
 #    url(r'^register/$', 'accounts.views.register', name="register"),
 #    url(r'^accounts/', include('accounts.urls')),
-)
+    )
