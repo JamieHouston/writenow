@@ -47,6 +47,22 @@ def move_item(request, pk, list_name, user_name):
     return HttpResponse(simplejson.dumps(result))
 
 
+@csrf_exempt
+def tag_action(request, action):
+    pk = request.POST['pk']
+
+    item = Item.objects.get(pk=pk)
+    tag = request.POST['tag']
+    
+    if action == "remove":
+        item.tags.remove(tag)
+    elif action == "add":
+        item.tags.add(tag)
+    else:
+        return HttpResponse(simplejson.dumps({"status": "fail"}))
+    return HttpResponse(simplejson.dumps({"status": "ok"}))
+
+
 def remove_item(request, user_name, list_name, pk):
     item = Item.objects.get(pk=pk)
     if item:

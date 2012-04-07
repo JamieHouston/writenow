@@ -28,6 +28,10 @@ WriteNow.UI = WriteNow.UI || {};
 			});
 
 			$('#choose_list').on('change', switchList);
+
+			$('.tag-action').on('click', updateTag);
+
+			$('#save_new_tag').on('click', newTag);
 		};
 
 		function moveItem(event, ui) {
@@ -119,6 +123,38 @@ WriteNow.UI = WriteNow.UI || {};
 			var userName = $('#user_name').text();
 			var newList = $('#new_list').val();
 			location.href = "/" + userName + "/" + newList + "/";
+		}
+
+		function updateTag(){
+			var selector = this;
+			var parts = this.id.split('_');
+			switch (parts[0])
+			{
+				case "new":
+					$('#new_tag_name').val('');
+					$('#new_tag_name').focus()
+					$('#new_tag').modal();
+					$('#new_tag_name').data('pk', parts[1]);
+					break;
+				case "remove":
+					var id = parts[1];
+					var tag = parts[2];
+					$.post('/api/tag/remove/',
+						{pk:id, tag:tag}
+					);
+					$(this).parent().remove();
+			}
+			return false;
+		}
+
+		function newTag(){
+			var pk = $('#new_tag_name').data('pk');
+			var tag = $('#new_tag_name').val();
+			$.post('/api/tag/add/',
+				{pk:pk, tag:tag}
+			);
+			$('#new_tag').modal('hide');
+			$('#' + pk).next().append('<span class="tag"><i class="icon-remove tag-action" id="remove_' + pk + '_' + tag  + '"></i>' + tag + '</span>');
 		}
 	}).apply(WriteNow.UI);
 })(jQuery);

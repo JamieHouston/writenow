@@ -57,6 +57,7 @@ div.sidebar-nav span.badge{
         box-shadow: 0 1px 1px #e4edf2;
         -webkit-box-shadow: 0 1px 1px #e4edf2;
         -moz-box-shadow: 0 1px 1px #e4edf2;
+        margin-right:5px;
 }
 
 .tag:hover{
@@ -65,4 +66,9 @@ div.sidebar-nav span.badge{
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bbd4f1), to(#a3c2e5));
     border-color: #6da0e0;
     border-top-color: #8bb7ed;
+}
+
+i.tag-action{
+	margin-top:3px;
+	cursor: pointer
 }

@@ -30,7 +30,7 @@ $(document).ready(function() {
 				{% for user_list in user_lists %}
 					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items }}</span></a></li>
 				{% endfor %}
-				<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
+				<li><input type="text" placeholder="new tag" id="new_list" class="span2"></li>
 			</ul>
 		</div>
 		{% endif %}
@@ -50,8 +50,15 @@ $(document).ready(function() {
 						<input type="checkbox" {% if item.complete %} checked="checked" {% endif %} name="complete" id="{{ item.pk }}">
 						<span {% if item.complete %}  class="complete" {% endif %}>{{ item }}</span>
 						{% for tag in item.tags.all %}
-						<span class="tag">{{ tag }}</span>
+						<span class="tag">
+							<i class="icon-remove tag-action" id="remove_{{ item.pk }}_{{ tag }}"></i>
+							{{ tag }} 
+						</span>
 						{% endfor %}
+						<span class="tag">
+							<i class="icon-plus tag-action" id="new_{{ item.pk }}"></i> 
+							new
+						</span>
 						<div class="item-actions">
 							<i class="icon-trash delete-item"></i>
 							<i class="icon-move move-item"></i>
@@ -66,6 +73,21 @@ $(document).ready(function() {
   			<strong>Note</strong> Once all items on a list are deleted, the list is deleted as well.  Adding a new item will add the list back.
 		</div>
 		<div><input type="button" id="clear_list" value="clear list" class="btn btn-warning"></div>
+	</div>
+</div>
+<div class="modal" id="new_tag" style="display:none;">
+	<div class="modal-header">
+		<div class="modal-header">
+    		<a class="close" data-dismiss="modal">×</a>
+    		<h3>New Tag</h3>
+  		</div>
+  		<div class="modal-body">
+			<input type="text" placeholder="new tag" id="new_tag_name">
+  		</div>
+  		<div class="modal-footer">
+    		<input class="btn" data-dismiss="modal" value="Close">
+    		<input class="btn btn-primary" id="save_new_tag" value="Save changes">
+  		</div>
 	</div>
 </div>
 {% endblock %}
