@@ -42,3 +42,27 @@ div.sidebar-nav span.badge{
 	font-style: :italic;
 	font-weight: bolder;
 }
+
+.tag{
+        color: #2b3840;
+        text-shadow: 0 1px 1px #fff;
+        background-color: #ddeefe;
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
+        border: 1px solid #acc3ec;
+        border-top-color: #c0d9e9;
+        padding: 2px 7px 2px 10px;
+        border-radius: 12px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        box-shadow: 0 1px 1px #e4edf2;
+        -webkit-box-shadow: 0 1px 1px #e4edf2;
+        -moz-box-shadow: 0 1px 1px #e4edf2;
+}
+
+.tag:hover{
+	color: #2b3840;
+    background-color: #bbd4f1;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bbd4f1), to(#a3c2e5));
+    border-color: #6da0e0;
+    border-top-color: #8bb7ed;
+}

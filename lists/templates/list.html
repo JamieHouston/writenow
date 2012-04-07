@@ -49,6 +49,9 @@ $(document).ready(function() {
 					<label class="checkbox" data-order="{{ item.order }}" {% if item.complete %}  class="complete" {% endif %}>
 						<input type="checkbox" {% if item.complete %} checked="checked" {% endif %} name="complete" id="{{ item.pk }}">
 						<span {% if item.complete %}  class="complete" {% endif %}>{{ item }}</span>
+						{% for tag in item.tags.all %}
+						<span class="tag">{{ tag }}</span>
+						{% endfor %}
 						<div class="item-actions">
 							<i class="icon-trash delete-item"></i>
 							<i class="icon-move move-item"></i>

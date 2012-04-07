@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django.db.models import F
+from taggit.managers import TaggableManager
 
 
 class SortableModel(models.Model):
@@ -74,6 +75,8 @@ class Item(SortableModel):
     name = models.CharField(max_length=500)
     complete = models.BooleanField(default=False)
     list = models.ForeignKey(List)
+    tags = TaggableManager()
+    created_by = models.ForeignKey(User, blank=True, null=True)
 
     def __unicode__(self):
         return unicode(self.name)
