@@ -1,9 +1,44 @@
 #items {
-	margin-top:10px; 
-	cursor:move;
+	margin-top:10px;
 }
-#items label{line-height:25px;}
+
+div.item-actions{
+	display:inline;
+	width:50px;
+}
+
+div.item-actions i{
+	float:right;
+}
+
+i.move-item{
+	cursor: move;
+}
+#items label{
+	padding:5px;
+	line-height:25px; 
+	margin-left:10px;
+	font-size:16px;
+}
+
+#items .complete{
+	text-decoration:line-through;
+	}
 input {height:30px;}
 td.link_row {
 	cursor: pointer;
+}
+
+div.sidebar-nav{
+	font-size:16px;
+	text-align:right;
+}
+
+div.sidebar-nav span.badge{
+	margin-left:10px;
+}
+
+#user_name{
+	font-style: :italic;
+	font-weight: bolder;
 }

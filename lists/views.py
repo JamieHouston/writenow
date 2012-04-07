@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
@@ -18,7 +19,7 @@ def view_list(request, user_name, list_name):
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
 
-    user_lists = user.list_set.all()
+    user_lists = user.list_set.all().order_by('name')
     return render_to_response("list.html", {
             "list": list,
             "list_items": list.item_set.all(),
@@ -33,7 +34,16 @@ def add_item(request, user_name, list_name, new_item):
     item = Item(name=new_item, order=list.item_set.count())
     item.list = list
     item.save()
-    result = {"name": item.name, "pk": item.pk}
+    result = {"name": item.name, "pk": item.pk, "order": item.order}
+    return HttpResponse(simplejson.dumps(result))
+
+
+@csrf_exempt
+def move_item(request, pk, list_name, user_name):
+    after = request.POST['order']
+    item = Item.objects.get(pk=pk)
+    item.move(after)
+    result = {"name": item.name, "pk": item.pk, "order": item.order}
     return HttpResponse(simplejson.dumps(result))
 
 
@@ -49,21 +59,27 @@ def remove_item(request, user_name, list_name, pk):
         return HttpResponse(simplejson.dumps({"status": "fail"}))
 
 
+@csrf_exempt
+def update_item(request, user_name, list_name, pk):
+    item = Item.objects.get(pk=pk)
+    if Item:
+        complete = request.POST['complete'] == "true"
+        item.complete = complete
+        item.save()
+        return HttpResponse(simplejson.dumps({"status": "ok"}))
+    else:
+        return HttpResponse(simplejson.dumps({"status": "fail"}))
+
+
 def clear_list(request, user_name, list_name):
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
     list.item_set.all().delete()
     list.delete()
+    return HttpResponse(simplejson.dumps({"status": "ok"}))
 
 
 def get_or_create_user(user_name):
-    #user = request.user
-    #if not user.is_authenticated():
-    #    user = User.objects.filter(username=user_name)
-    #    if len(user) == 1:
-    #        user = user[0]
-    #    else:
-    #        user = None
     user = User.objects.filter(username=user_name)
     if len(user) == 0:
         user = User.objects.create_user(user_name, 'test@test.com', 'xyzzy')
