@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from taggit.models import Tag
 
 
 def home(request):
@@ -18,12 +19,14 @@ def view_list(request, user_name, list_name):
 #    import pdb; pdb.set_trace()
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
+    tags = Tag.objects.all()
 
     user_lists = user.list_set.all().order_by('name')
     return render_to_response("list.html", {
             "list": list,
-            "list_items": list.item_set.all(),
-            "user_lists": user_lists
+            "list_items": list.item_set.all().order_by('complete','order'),
+            "user_lists": user_lists,
+            "tags": tags
         }, context_instance=RequestContext(request))
 
 

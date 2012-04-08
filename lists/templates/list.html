@@ -27,10 +27,20 @@ $(document).ready(function() {
 		{% else %}
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
+				<li><a href="/{{ list.user }}/">All Items</a></li>
 				{% for user_list in user_lists %}
 					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items }}</span></a></li>
 				{% endfor %}
-				<li><input type="text" placeholder="new tag" id="new_list" class="span2"></li>
+				<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
+			</ul>
+			<ul id="selected_tags">
+				{% for tag in tags %}
+					<li>
+						<label class="checkbox">
+							<input type="checkbox">{{ tag }}
+						</label>
+					</li>
+				{% endfor %}
 			</ul>
 		</div>
 		{% endif %}
@@ -45,25 +55,29 @@ $(document).ready(function() {
 		<div class="row-fluid">
 			<div class="row6">
 				<div class="controls" id="items">
-				{% for item in list_items %}
-					<label class="checkbox" data-order="{{ item.order }}" {% if item.complete %}  class="complete" {% endif %}>
-						<input type="checkbox" {% if item.complete %} checked="checked" {% endif %} name="complete" id="{{ item.pk }}">
-						<span {% if item.complete %}  class="complete" {% endif %}>{{ item }}</span>
+				{% regroup list_items by complete as status_list %}
+				{% for status in status_list %}
+					<h3>{{ status.grouper|yesno:"Complete,To Do" }}</h3>
+					{% for item in status.list %}
+					<label class="checkbox" data-order="{{ item.order }}" id="item_{{ item.pk }}">
+						<input type="checkbox" name="complete" id="{{ item.pk }}"{% if item.complete %} checked="checked"{% endif%}>
+						<span>{{ item|truncatechars:50 }}</span>
 						{% for tag in item.tags.all %}
-						<span class="tag">
+						<span class="tag" style="display:none;">
 							<i class="icon-remove tag-action" id="remove_{{ item.pk }}_{{ tag }}"></i>
-							{{ tag }} 
+							{{ tag|truncatechars:10 }} 
 						</span>
 						{% endfor %}
-						<span class="tag">
+						<span class="tag" style="display:none;">
 							<i class="icon-plus tag-action" id="new_{{ item.pk }}"></i> 
-							new
+							add tag
 						</span>
 						<div class="item-actions">
-							<i class="icon-trash delete-item"></i>
-							<i class="icon-move move-item"></i>
+							<i class="icon-trash delete-item" style="display:none;"></i>
+							<i class="icon-move move-item" style="display:none;"></i>
 						</div>
 					</label>
+				{% endfor %}
 				{% endfor %}
 				</div>
 			</div>

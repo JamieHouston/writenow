@@ -9,6 +9,7 @@ WriteNow.UI = WriteNow.UI || {};
 			$('#clear_list').on('click', clearList);
 
 			runOnEnter($('#new_list'), createList);
+			runOnEnter($('#new_tag_name'), newTag);
 
 			$('body')
 				.on('change', 'input[type=checkbox]', updateStatus)
@@ -32,7 +33,17 @@ WriteNow.UI = WriteNow.UI || {};
 			$('.tag-action').on('click', updateTag);
 
 			$('#save_new_tag').on('click', newTag);
+
+			$('#items label')
+				.on('mouseenter', toggleListActions)
+				.on('mouseleave', toggleListActions);
 		};
+
+		function toggleListActions(){
+			$parent = $(this);
+			$parent.find('.tag, .item-actions i').toggle();
+			//$parent.find('.item-actions').toggle();
+		}
 
 		function moveItem(event, ui) {
 			var oldPos = ui.item.data('order');
@@ -101,12 +112,15 @@ WriteNow.UI = WriteNow.UI || {};
 				return false;
 			}
 			var complete = $item.is(':checked');
+			
+			$listItem = $('#item_' + pk);
+			$listItem.detach();
 			if (complete){
-				$item.parent().addClass('complete');
+				$('#items').append($listItem);
+			} else {
+				$('#items').prepend($listItem);
 			}
-			else {
-				$item.parent().removeClass('complete');
-			}
+
 			$.post('update/' + pk + '/',
 				{complete: complete}
 			);
@@ -132,8 +146,8 @@ WriteNow.UI = WriteNow.UI || {};
 			{
 				case "new":
 					$('#new_tag_name').val('');
-					$('#new_tag_name').focus()
 					$('#new_tag').modal();
+					$('#new_tag_name').focus();
 					$('#new_tag_name').data('pk', parts[1]);
 					break;
 				case "remove":
@@ -154,7 +168,7 @@ WriteNow.UI = WriteNow.UI || {};
 				{pk:pk, tag:tag}
 			);
 			$('#new_tag').modal('hide');
-			$('#' + pk).next().append('<span class="tag"><i class="icon-remove tag-action" id="remove_' + pk + '_' + tag  + '"></i>' + tag + '</span>');
+			$('#' + pk).next().append('<span class="tag" style="display:none;"><i class="icon-remove tag-action" id="remove_' + pk + '_' + tag  + '"></i>' + tag + '</span>');
 		}
 	}).apply(WriteNow.UI);
 })(jQuery);

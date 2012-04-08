@@ -14,11 +14,26 @@ div.item-actions i{
 i.move-item{
 	cursor: move;
 }
-#items label{
+#items label, #selected_tags li{
 	padding:5px;
 	line-height:25px; 
 	margin-left:10px;
 	font-size:16px;
+
+	background-color:#F9F9F9;
+    border:1px solid #EEEEEE;
+    text-shadow:1px 1px 0 white;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+}
+
+#items label:hover{
+	border-color:#9be0f9;
+    -moz-box-shadow:0 0 5px #A6E5FD;
+    -webkit-box-shadow:0 0 5px #A6E5FD;
+    box-shadow:0 0 5px #A6E5FD;
+
 }
 
 #items .complete{
@@ -44,20 +59,20 @@ div.sidebar-nav span.badge{
 }
 
 .tag{
-        color: #2b3840;
-        text-shadow: 0 1px 1px #fff;
-        background-color: #ddeefe;
-        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
-        border: 1px solid #acc3ec;
-        border-top-color: #c0d9e9;
-        padding: 2px 7px 2px 10px;
-        border-radius: 12px;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        box-shadow: 0 1px 1px #e4edf2;
-        -webkit-box-shadow: 0 1px 1px #e4edf2;
-        -moz-box-shadow: 0 1px 1px #e4edf2;
-        margin-right:5px;
+    color: #2b3840;
+    text-shadow: 0 1px 1px #fff;
+    background-color: #ddeefe;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
+    border: 1px solid #acc3ec;
+    border-top-color: #c0d9e9;
+    padding: 2px 7px 2px 10px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    box-shadow: 0 1px 1px #e4edf2;
+    -webkit-box-shadow: 0 1px 1px #e4edf2;
+    -moz-box-shadow: 0 1px 1px #e4edf2;
+    margin-right:5px;
 }
 
 .tag:hover{
