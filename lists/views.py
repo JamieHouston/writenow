@@ -24,7 +24,7 @@ def view_list(request, user_name, list_name):
     user_lists = user.list_set.all().order_by('name')
     return render_to_response("list.html", {
             "list": list,
-            "list_items": list.item_set.all().order_by('complete','order'),
+            "list_items": list.item_set.all().order_by('complete', 'order'),
             "user_lists": user_lists,
             "tags": tags
         }, context_instance=RequestContext(request))
@@ -55,8 +55,8 @@ def tag_action(request, action):
     pk = request.POST['pk']
 
     item = Item.objects.get(pk=pk)
-    tag = request.POST['tag']
-    
+    tag = request.POST['tag'].lower()
+
     if action == "remove":
         item.tags.remove(tag)
     elif action == "add":
