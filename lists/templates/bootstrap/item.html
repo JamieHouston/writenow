@@ -1,0 +1,18 @@
+<label class="checkbox" data-order="{{ item.order }}" id="item_{{ item.pk }}">
+    <input type="checkbox" name="complete" id="{{ item.pk }}"{% if item.complete %} checked="checked"{% endif%}>
+    <span>{{ item|truncatechars:50 }}</span>
+    {% for tag in item.tags.all %}
+    <span class="tag" style="display:none;">
+        <i class="icon-remove tag-action" id="remove_{{ item.pk }}_{{ tag }}"></i>
+        {{ tag|truncatechars:10 }} 
+    </span>
+    {% endfor %}
+    <span class="tag" style="display:none;">
+        <i class="icon-plus tag-action" id="new_{{ item.pk }}"></i> 
+        add tag
+    </span>
+    <div class="item-actions">
+        <i class="icon-trash delete-item" style="display:none;"></i>
+        <i class="icon-move move-item" style="display:none;"></i>
+    </div>
+</label>

@@ -59,6 +59,7 @@ div.sidebar-nav span.badge{
 }
 
 .tag{
+	font-size:12px;
     color: #2b3840;
     text-shadow: 0 1px 1px #fff;
     background-color: #ddeefe;
@@ -84,6 +85,5 @@ div.sidebar-nav span.badge{
 }
 
 i.tag-action{
-	margin-top:3px;
 	cursor: pointer
 }

@@ -13,8 +13,8 @@ class Migration(SchemaMigration):
         # Adding field 'Item.created_by'
         db.add_column('lists_item', 'created_by', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True), keep_default=False)
         # updating items with tags
-        for item in Item.objects.all():
-            item.tags.add(item.list.name)
+        #for item in Item.objects.all():
+        #    item.tags.add(item.list.name)
 
     def backwards(self, orm):
 

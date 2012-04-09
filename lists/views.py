@@ -20,14 +20,13 @@ def view_list(request, user_name, list_name):
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
     tags = Tag.objects.all()
-
+    #if list_name == "inbox":
+    #    list_items = Item.objects.all()
+    #else:
+    todo_items = list.item_set.filter(complete=False).order_by('order')
+    complete_items = list.item_set.filter(complete=True).order_by('order')
     user_lists = user.list_set.all().order_by('name')
-    return render_to_response("list.html", {
-            "list": list,
-            "list_items": list.item_set.all().order_by('complete', 'order'),
-            "user_lists": user_lists,
-            "tags": tags
-        }, context_instance=RequestContext(request))
+    return render_to_response("list.html", locals(), context_instance=RequestContext(request))
 
 
 def add_item(request, user_name, list_name, new_item):

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap %}
 {% block title %}{{ list }}{% endblock %}
 {% block scripts %}
 <script>
@@ -27,7 +28,7 @@ $(document).ready(function() {
 		{% else %}
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
-				<li><a href="/{{ list.user }}/">All Items</a></li>
+				{# <li><a href="/{{ list.user }}/">All Items</a></li> #}
 				{% for user_list in user_lists %}
 					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items }}</span></a></li>
 				{% endfor %}
@@ -36,9 +37,7 @@ $(document).ready(function() {
 			<ul id="selected_tags">
 				{% for tag in tags %}
 					<li>
-						<label class="checkbox">
-							<input type="checkbox">{{ tag }}
-						</label>
+						{{ tag|bootstrap }}
 					</li>
 				{% endfor %}
 			</ul>
@@ -54,31 +53,19 @@ $(document).ready(function() {
 		</div>
 		<div class="row-fluid">
 			<div class="row6">
-				<div class="controls" id="items">
-				{% regroup list_items by complete as status_list %}
-				{% for status in status_list %}
-					<h3>{{ status.grouper|yesno:"Complete,To Do" }}</h3>
-					{% for item in status.list %}
-					<label class="checkbox" data-order="{{ item.order }}" id="item_{{ item.pk }}">
-						<input type="checkbox" name="complete" id="{{ item.pk }}"{% if item.complete %} checked="checked"{% endif%}>
-						<span>{{ item|truncatechars:50 }}</span>
-						{% for tag in item.tags.all %}
-						<span class="tag" style="display:none;">
-							<i class="icon-remove tag-action" id="remove_{{ item.pk }}_{{ tag }}"></i>
-							{{ tag|truncatechars:10 }} 
-						</span>
-						{% endfor %}
-						<span class="tag" style="display:none;">
-							<i class="icon-plus tag-action" id="new_{{ item.pk }}"></i> 
-							add tag
-						</span>
-						<div class="item-actions">
-							<i class="icon-trash delete-item" style="display:none;"></i>
-							<i class="icon-move move-item" style="display:none;"></i>
-						</div>
-					</label>
-				{% endfor %}
-				{% endfor %}
+				<div id="items">
+				<h3>To Do</h3>
+				<div class="controls" id="items_todo">
+					{% for item in todo_items %}
+						{{ item|bootstrap}}
+					{% endfor %}
+				</div>
+				<h3>Complete</h3>
+				<div class="controls" id="items_complete">
+					{% for item in complete_items %}
+						{{ item|bootstrap}}
+					{% endfor %}
+				</div>
 				</div>
 			</div>
 		</div>

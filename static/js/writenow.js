@@ -13,7 +13,10 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$('body')
 				.on('change', 'input[type=checkbox]', updateStatus)
-				.on('click', 'i.delete-item', deleteItem);
+				.on('click', 'i.delete-item', deleteItem)
+				.on('mouseenter', '#items label', toggleListActions)
+				.on('mouseleave', '#items label', toggleListActions)
+				.on('click', '.tag-action', updateTag);
 
 
 			$newItem = $('#new_item');
@@ -30,13 +33,9 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$('#choose_list').on('change', switchList);
 
-			$('.tag-action').on('click', updateTag);
 
 			$('#save_new_tag').on('click', newTag);
 
-			$('#items label')
-				.on('mouseenter', toggleListActions)
-				.on('mouseleave', toggleListActions);
 		};
 
 		function toggleListActions(){
@@ -68,7 +67,9 @@ WriteNow.UI = WriteNow.UI || {};
 			$.ajax('add/' + newItem, {
 				success: function(data){
 					item = JSON.parse(data);
-					$('#items').append('<label class="checkbox" data-order="' + item.order + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + '</span><div class="item-actions"><i class="icon-trash delete-item"></i><i class="icon-move move-item"></i></div></label>');
+					$('#items_todo').prepend('<label class="checkbox" data-order="' + item.order + '" id="item_' + 
+						item.pk + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + 
+						'</span><span class="tag" style="display:none;"><i class="icon-plus tag-action" id="new_{{ item.pk }}"></i>add tag</span><div class="item-actions"><i class="icon-trash delete-item" style="display:none;"></i><i class="icon-move move-item" style="display:none;"></i></div></label>');
 					$('#new_item').val('');
 					showListStatus();
 				}
@@ -114,11 +115,11 @@ WriteNow.UI = WriteNow.UI || {};
 			var complete = $item.is(':checked');
 			
 			$listItem = $('#item_' + pk);
-			$listItem.detach();
+			$listItem.hide().detach();
 			if (complete){
-				$('#items').append($listItem);
+				$('#items_complete').append($listItem.fadeIn());
 			} else {
-				$('#items').prepend($listItem);
+				$('#items_todo').prepend($listItem.fadeIn());
 			}
 
 			$.post('update/' + pk + '/',
