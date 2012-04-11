@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django.db.models import F
-from taggit.managers import TaggableManager
 
 
 class SortableModel(models.Model):
@@ -51,6 +50,14 @@ class SortableModel(models.Model):
         self.save()
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+    owner = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
 class List(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, blank=True, null=True)
@@ -70,16 +77,26 @@ class List(models.Model):
         }
     )
 
+    def get_tags(self):
+        tags = []
+        for item in self.item_set.all():
+            tags.extend(item.tags.all())
+        return tags
+
+
 
 class Item(SortableModel):
     name = models.CharField(max_length=500)
     complete = models.BooleanField(default=False)
     list = models.ForeignKey(List)
-    tags = TaggableManager()
+    tags = models.ManyToManyField(Tag)
     created_by = models.ForeignKey(User, blank=True, null=True)
 
     def __unicode__(self):
         return unicode(self.name)
+
+    def get_tag_array(self):
+        return self.tags.values_list('id', flat=True)
 
 admin.site.register(List)
 admin.site.register(Item)

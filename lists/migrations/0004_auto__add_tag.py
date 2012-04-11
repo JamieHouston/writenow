@@ -8,19 +8,30 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'TaggedItem'
-        db.create_table('lists_taggeditem', (
+        # Adding model 'Tag'
+        db.create_table('lists_tag', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('tag', self.gf('django.db.models.fields.related.ForeignKey')(related_name='lists_taggeditem_items', to=orm['taggit.Tag'])),
-            ('content_object', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['lists.Item'])),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
-        db.send_create_signal('lists', ['TaggedItem'])
+        db.send_create_signal('lists', ['Tag'])
+
+        # Adding M2M table for field tags on 'Item'
+        db.create_table('lists_item_tags', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('item', models.ForeignKey(orm['lists.item'], null=False)),
+            ('tag', models.ForeignKey(orm['lists.tag'], null=False))
+        ))
+        db.create_unique('lists_item_tags', ['item_id', 'tag_id'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'TaggedItem'
-        db.delete_table('lists_taggeditem')
+        # Deleting model 'Tag'
+        db.delete_table('lists_tag')
+
+        # Removing M2M table for field tags on 'Item'
+        db.delete_table('lists_item_tags')
 
 
     models = {
@@ -39,7 +50,7 @@ class Migration(SchemaMigration):
         },
         'auth.user': {
             'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 7, 21, 57, 23, 950000)'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 10, 21, 0, 54, 664000)'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -47,7 +58,7 @@ class Migration(SchemaMigration):
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 7, 21, 57, 23, 950000)'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 4, 10, 21, 0, 54, 664000)'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -67,7 +78,8 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'list': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lists.List']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'order': ('django.db.models.fields.IntegerField', [], {'default': '1'})
+            'order': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['lists.Tag']", 'symmetrical': 'False'})
         },
         'lists.list': {
             'Meta': {'object_name': 'List'},
@@ -75,24 +87,11 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'})
         },
-        'lists.taggeditem': {
-            'Meta': {'object_name': 'TaggedItem'},
-            'content_object': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lists.Item']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'tag': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'lists_taggeditem_items'", 'to': "orm['taggit.Tag']"})
-        },
-        'taggit.tag': {
+        'lists.tag': {
             'Meta': {'object_name': 'Tag'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100', 'db_index': 'True'})
-        },
-        'taggit.taggeditem': {
-            'Meta': {'object_name': 'TaggedItem'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'taggit_taggeditem_tagged_items'", 'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'object_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
-            'tag': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'taggit_taggeditem_items'", 'to': "orm['taggit.Tag']"})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         }
     }
 

@@ -1,3 +1,13 @@
+Array.prototype.union =
+  function() {
+    var a = [].concat(this);
+    var l = arguments.length;
+    for(var i=0; i<l; i++) {
+      a = a.concat(arguments[i]);
+    }
+    return a.unique();
+  };
+
 var WriteNow = WriteNow || {};
 WriteNow.UI = WriteNow.UI || {};
 
@@ -12,11 +22,12 @@ WriteNow.UI = WriteNow.UI || {};
 			runOnEnter($('#new_tag_name'), newTag);
 
 			$('body')
-				.on('change', 'input[type=checkbox]', updateStatus)
+				.on('change', '#items input[type=checkbox]', updateStatus)
 				.on('click', 'i.delete-item', deleteItem)
 				.on('mouseenter', '#items label', toggleListActions)
 				.on('mouseleave', '#items label', toggleListActions)
-				.on('click', '.tag-action', updateTag);
+				.on('click', '.tag-action', updateTag)
+				.on('click', '.tag_filter', filterTags);
 
 
 			$newItem = $('#new_item');
@@ -25,7 +36,7 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$newItem.focus();
 
-			$('#items').sortable({
+			$('div.controls').sortable({
 				handle: 'i.move-item',
 				stop: moveItem,
 				axis: 'y'
@@ -37,6 +48,32 @@ WriteNow.UI = WriteNow.UI || {};
 			$('#save_new_tag').on('click', newTag);
 
 		};
+
+		function filterTags(){
+
+			var $checked = $('#selected_tags input:checked');
+			if ($checked.length == 0){
+				$('#items label').show();
+			} else {
+				tags = $checked.map(function(){return this.id});
+				$('#items label').each(function(){
+					var $item = $(this);
+					var found = false;
+					var len = tags.length;
+					while (len--){
+						tag_id = tags[len] * 1;
+						if ($.inArray(tag_id, $item.data("tags")) > -1){
+							found = true;
+						}
+					}
+					if (found){
+						$item.show();
+					} else {
+						$item.hide();
+					}
+				});
+			}
+		}
 
 		function toggleListActions(){
 			$parent = $(this);
@@ -154,7 +191,8 @@ WriteNow.UI = WriteNow.UI || {};
 				case "remove":
 					var id = parts[1];
 					var tag = parts[2];
-					$.post('/api/tag/remove/',
+					var userName = $('#user_name').text();
+					$.post('/' + userName + '/api/tag/remove/',
 						{pk:id, tag:tag}
 					);
 					$(this).parent().remove();
@@ -165,7 +203,8 @@ WriteNow.UI = WriteNow.UI || {};
 		function newTag(){
 			var pk = $('#new_tag_name').data('pk');
 			var tag = $('#new_tag_name').val();
-			$.post('/api/tag/add/',
+			var userName = $('#user_name').text();
+			$.post('/' + userName + '/api/tag/add/',
 				{pk:pk, tag:tag}
 			);
 			$('#new_tag').modal('hide');

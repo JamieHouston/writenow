@@ -1,4 +1,4 @@
-<label class="checkbox" data-order="{{ item.order }}" id="item_{{ item.pk }}">
+<label class="checkbox" data-order="{{ item.order }}" id="item_{{ item.pk }}" data-tags="{{ item.get_tag_array }}">
     <input type="checkbox" name="complete" id="{{ item.pk }}"{% if item.complete %} checked="checked"{% endif%}>
     <span>{{ item|truncatechars:50 }}</span>
     {% for tag in item.tags.all %}

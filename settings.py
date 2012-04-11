@@ -24,7 +24,7 @@ DATABASES = {
 LOGIN_REDIRECT_URL = "/l/"
 
 TIME_ZONE = 'America/Chicago'
-
+INTERNAL_IPS = ('127.0.0.1',)
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -95,6 +95,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'minidetector.Middleware',
     #'mobiledetector.middleware.MobileDetectionMiddleware',
 )
@@ -125,7 +126,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'taggit',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'lists',
     'accounts',
     'south',
+    'debug_toolbar',
 
 )
 
