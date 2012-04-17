@@ -5,6 +5,12 @@
 <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/writenow.css" rel="stylesheet"/>
+<!--[if (!IE)|(gte IE 8)]><!-->
+  <link href="{{ STATIC_URL }}css/visualsearch-datauri.css" media="screen" rel="stylesheet" type="text/css" />
+<!--<![endif]-->
+<!--[if lte IE 7]><!-->
+  <link href="{{ STATIC_URL }}css/visualsearch.css" media="screen" rel="stylesheet" type="text/css" />
+<!--<![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <style>
 ul {
@@ -37,6 +43,9 @@ function runOnEnter($target, action){
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}js/underscore-min.js"></script>
+<script src="{{ STATIC_URL }}js/backbone-min.js"></script>
+<script src="{{ STATIC_URL }}js/visualsearch.js"></script>
 <script src="{{ STATIC_URL }}js/writenow.js"></script>
 {% block scripts %}{% endblock %}
 	<script type="text/javascript">

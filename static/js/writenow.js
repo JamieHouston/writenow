@@ -47,15 +47,32 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$('#save_new_tag').on('click', newTag);
 
+			initVisualSearch();
 		};
+
+		function initVisualSearch(){
+			var visualSearch = VS.init({
+				container : $('.visual_search'),
+				query     : '',
+				callbacks : {
+					search       : function(query, searchCollection) {},
+					facetMatches : function(callback) {
+						callback(['list', 'tag', 'due']);
+					},
+					valueMatches : function(facet, searchTerm, callback) {
+						callback(['first', 'second', 'third']);
+					}
+				}
+    });
+		}
 
 		function filterTags(){
 
 			var $checked = $('#selected_tags input:checked');
-			if ($checked.length == 0){
+			if ($checked.length === 0){
 				$('#items label').show();
 			} else {
-				tags = $checked.map(function(){return this.id});
+				tags = $checked.map(function(){return this.id;});
 				$('#items label').each(function(){
 					var $item = $(this);
 					var found = false;
