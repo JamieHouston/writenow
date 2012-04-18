@@ -3,6 +3,8 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('lists.views',
     url(r'^$', 'home'),
+    url(r'^sandbox$', 'sandbox'),
+
     url(r'^(?P<user_name>[\w\s\d]+)/$', 'view_user'),
     url(r'^(?P<user_name>[\w\s\d]+)/add/(?P<new_item>.+)$', 'add_item', {'list_name': 'inbox'}),
     url(r'^(?P<user_name>[\w\s\d]+)/move/(?P<pk>[\w\s\d]+)/$', 'move_item'),

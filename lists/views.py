@@ -15,6 +15,13 @@ def home(request):
     )
 
 
+def sandbox(request):
+    return render_to_response("sandbox.html",
+        None,
+        context_instance=RequestContext(request)
+    )
+
+
 def view_user(request, user_name):
     user = get_or_create_user(user_name)
     tags = Tag.objects.filter(owner=user)
@@ -61,7 +68,7 @@ def tag_action(request, user_name, action):
     user = get_or_create_user(user_name)
 
     item = Item.objects.get(pk=pk)
-    
+
     tag_name = request.POST['tag'].lower()
 
     #pdb.set_trace()
