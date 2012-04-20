@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render_to_response, redirect
-from django.core import urlresolvers
 from django.template import RequestContext
 from django.contrib.auth.models import User
 
@@ -13,9 +12,8 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                url = urlresolvers.reverse('client_list')
-                return redirect(url)
-    return render_to_response("login.html", locals(), context_instance=RequestContext(request))
+                return redirect('view_user', user_name=username)
+    return render_to_response("accounts/login.html", locals(), context_instance=RequestContext(request))
 
 
 def create_user(request):
@@ -25,4 +23,4 @@ def create_user(request):
         email = request.POST['email']
         User.objects.create_user(username, email, password)
         return redirect('view_user', user_name=username)
-    return render_to_response("register.html", locals(), context_instance=RequestContext(request))
+    return render_to_response("accounts/register.html", locals(), context_instance=RequestContext(request))
