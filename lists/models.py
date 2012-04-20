@@ -65,8 +65,17 @@ class List(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
+    def get_tags(self):
+        tags = []
+        for item in self.item_set.all():
+            tags.extend(item.tags.all())
+        return tags
+
+    def complete_items(self):
+        return self.item_set.filter(complete=True)
+
     def incomplete_items(self):
-        return self.item_set.filter(complete=False).count()
+        return self.item_set.filter(complete=False)
 
     @models.permalink
     def get_absolute_url(self):
@@ -76,13 +85,6 @@ class List(models.Model):
             'list_name': self.name
         }
     )
-
-    def get_tags(self):
-        tags = []
-        for item in self.item_set.all():
-            tags.extend(item.tags.all())
-        return tags
-
 
 
 class Item(SortableModel):

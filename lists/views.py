@@ -1,10 +1,11 @@
 from models import *
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from django.core.urlresolvers import reverse
 import pdb
 
 
@@ -20,6 +21,15 @@ def sandbox(request):
         None,
         context_instance=RequestContext(request)
     )
+
+
+def view_user_list(request, list_name):
+    if request.user.is_authenticated():
+        list = get_or_create_list(request.user, list_name)
+        return render_to_response("list.html", locals(), context_instance=RequestContext(request))
+    url = reverse('login_user')
+    return redirect(url)
+
 
 
 def view_user(request, user_name):

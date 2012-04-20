@@ -36,6 +36,23 @@ function runOnEnter($target, action){
 </head>
 <body>
 	<div class="container-fluid">
+        <nav>
+        <ul class="nav">
+            {% if user.is_authenticated %}
+                <li class="navbar-text">
+                    <div>
+                        Logged in as
+                        <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>
+                    </div>
+                </li>
+                <li>
+                    <a href="/accounts/logout/">Log Out</a>
+                </li>
+            {% else %}
+                <li><a href="/accounts/login/">Log In</a>
+            {% endif %}
+            </ul>
+        </nav>
 {% block content %}{% endblock %}
 	</div>
 

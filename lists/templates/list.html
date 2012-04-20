@@ -21,7 +21,7 @@ $(document).ready(function() {
 		{% if mobile %}
 			<select class="span2" id="choose_list">
 				<option>Change to...</option>
-			{% for user_list in user_lists %}
+			{% for user_list in request.user.list_set %}
 				<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
 			{% endfor %}
 			</select>
@@ -29,13 +29,13 @@ $(document).ready(function() {
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
 				{# <li><a href="/{{ list.user }}/">All Items</a></li> #}
-				{% for user_list in user_lists %}
-					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items }}</span></a></li>
+				{% for user_list in request.user.list_set %}
+					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items.count }}</span></a></li>
 				{% endfor %}
 				<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>
 			</ul>
 			<ul id="selected_tags">
-				{% for tag in tags %}
+				{% for tag in list.get_tags %}
 					<li>
 						{{ tag|bootstrap }}
 					</li>
@@ -56,13 +56,13 @@ $(document).ready(function() {
 				<div id="items">
 				<h3>To Do</h3>
 				<div class="controls" id="items_todo">
-					{% for item in todo_items %}
+					{% for item in list.incomplete_items %}
 						{{ item|bootstrap}}
 					{% endfor %}
 				</div>
 				<h3>Complete</h3>
 				<div class="controls" id="items_complete">
-					{% for item in complete_items %}
+					{% for item in list.complete_items %}
 						{{ item|bootstrap}}
 					{% endfor %}
 				</div>
