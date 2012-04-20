@@ -1,17 +1,17 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('django.contrib.auth.views',
-#            url(r'^login/$',
-#                'login', {'template_name': 'login.html'},
-#                name='login'),
+urlpatterns = patterns('accounts.views',
     url(r'^login/',
-        'accounts.views.login_user',
+        'login_user',
         name='login_user'
     ),
     url(r'^register/',
-        'accounts.views.register_user',
+        'create_user',
         name='register_user'
-    ),
+    )
+)
+
+urlpatterns += patterns('django.contrib.auth.views',
     url(r'^logout/$',
         'logout', {'next_page': '/'},
         name='logout'),

@@ -6,6 +6,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
+    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/images/32.ico'}),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^', include('lists.urls')),
 

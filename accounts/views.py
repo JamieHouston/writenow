@@ -17,11 +17,12 @@ def login_user(request):
                 return redirect(url)
     return render_to_response("login.html", locals(), context_instance=RequestContext(request))
 
+
 def create_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        email = request.POST('email')
-        user = User.objects.create_user(username, email, password)
-        url = urlresolvers.reverse('view_user', user_name=username)
-        return redirect(url)
+        email = request.POST['email']
+        User.objects.create_user(username, email, password)
+        return redirect('view_user', user_name=username)
+    return render_to_response("register.html", locals(), context_instance=RequestContext(request))
