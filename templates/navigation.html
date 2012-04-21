@@ -1,0 +1,47 @@
+{% load i18n %}
+<div id="toppanel">
+
+    <div id="panel" style="display: none; ">
+        <div>
+            <h2>Settings and Stuff</h2>
+        </div>
+    </div>
+
+    <!-- The tab on top -->
+    <div class="tab">
+        <ul class="login">
+            <li class="left">&nbsp;</li>
+            <li id="toggle">
+                <a id="open" class="open" href="#" style="display: block; ">Log In | Register</a>
+                <a id="close" style="display: none; " class="close" href="#">Close Panel</a>
+            </li>
+            <li class="right">&nbsp;</li>
+        </ul>
+    </div>
+
+</div>
+<!--
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="/">e l i.s t</a>
+          <div class="nav-collapse">
+            <form class="navbar-search">
+              <input type="text" class="search-query" placeholder="new item" id="new_item" autocomplete="off">
+            </form>
+            <ul class="nav pull-right">
+              {% if user.is_authenticated %}
+              <li class="span2">
+                <a href="/admin/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li>
+                <a href="/admin/login">Log In</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+-->

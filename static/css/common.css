@@ -1,0 +1,110 @@
+ul {
+list-style: disc;
+}
+#panel {
+width: 100%;
+height: 250px;
+color: white;
+background: #272727;
+overflow: hidden;
+position: relative;
+z-index: 3;
+display: none;
+}
+
+#toppanel {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tab {
+    background: url('/static/img/tab_b.png') repeat-x 0 0;
+    height: 42px;
+    position: relative;
+    top: 0;
+    z-index: 999;
+}
+
+.tab ul.login {
+    display: block;
+    position: relative;
+    float: right;
+    clear: right;
+    height: 42px;
+    width: auto;
+    font-weight: bold;
+    line-height: 42px;
+    margin: 0;
+    right: 50px;
+    color: white;
+    font-size: 80%;
+    text-align: center;
+}
+
+
+.tab ul.login li.left {
+background: url('/static/img/tab_l.png') no-repeat left 0;
+height: 42px;
+width: 30px;
+padding: 0;
+margin: 0;
+display: block;
+float: left;
+}
+
+.tab ul.login li {
+text-align: left;
+padding: 0 6px;
+margin: 0;
+display: block;
+float: left;
+height: 42px;
+line-height: 42px;
+background: url('/static/img/tab_m.png') repeat-x 0 0;
+}
+
+.tab a.open, .tab a.close {
+height: 20px;
+line-height: 20px!important;
+padding-left: 30px!important;
+cursor: pointer;
+display: block;
+width: 100px;
+position: relative;
+top: 11px;
+font-size: 10px;
+}
+
+.tab a.open {
+background: url('/static/img/bt_open.png') no-repeat left 0;
+}
+
+.tab ul.login li a {
+color: #9AADD5;
+}
+
+.close {
+float: right;
+font-size: 20px;
+font-weight: bold;
+line-height: 18px;
+color: black;
+text-shadow: 0 1px 0 white;
+opacity: 0.2;
+filter: alpha(opacity=20);
+}
+
+.tab ul.login li.right {
+background: url('/static/img/tab_r.png') no-repeat left 0;
+height: 42px;
+width: 30px;
+padding: 0;
+margin: 0;
+display: block;
+float: left;
+}

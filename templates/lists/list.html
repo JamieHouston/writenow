@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "lists/list_base.html" %}
 {% load bootstrap %}
 {% block title %}{{ list }}{% endblock %}
 {% block scripts %}
@@ -10,7 +10,6 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block content %}
-
 	<div class="row-fluid">
 		<div class="offset1">
 			<h3>{{ list }} (created by <a href="/{{ list.user }}" id="user_name">{{ list.user }}</a>)</h3>
@@ -21,7 +20,7 @@ $(document).ready(function() {
 		{% if mobile %}
 			<select class="span2" id="choose_list">
 				<option>Change to...</option>
-			{% for user_list in request.user.list_set %}
+			{% for user_list in request.user.list_set.all %}
 				<option value="{{ user_list.get_absolute_url }}">{{ user_list }}</option>
 			{% endfor %}
 			</select>
@@ -29,7 +28,7 @@ $(document).ready(function() {
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
 				{# <li><a href="/{{ list.user }}/">All Items</a></li> #}
-				{% for user_list in request.user.list_set %}
+				{% for user_list in request.user.list_set.all %}
 					<li><a href="{{ user_list.get_absolute_url }}">{{ user_list }}<span class="badge badge-success">{{ user_list.incomplete_items.count }}</span></a></li>
 				{% endfor %}
 				<li><input type="text" placeholder="new list" id="new_list" class="span2"></li>

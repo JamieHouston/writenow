@@ -8,53 +8,19 @@
 <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet"/>
 <link href="{{ STATIC_URL }}css/writenow.css" rel="stylesheet"/>
+<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet"/>
 
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<style>
-ul {
-	list-style: none;
-	margin-left: 0;
-	padding-left: 1em;
-	text-indent: -1em;
-}
-
-li.complete{
-	text-decoration: line-through;
-}
-</style>
-<script>
-function runOnEnter($target, action){
-	$target.on('keyup', function(e){
-		if (e.keyCode == 13) action();
-	});
-}
-</script>
 {% block header %}
 {% endblock %}
 </head>
 <body>
-	<div class="container-fluid">
-        <nav>
-        <ul class="nav">
-            {% if user.is_authenticated %}
-                <li class="navbar-text">
-                    <div>
-                        Logged in as
-                        <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>
-                    </div>
-                </li>
-                <li>
-                    <a href="/accounts/logout/">Log Out</a>
-                </li>
-            {% else %}
-                <li><a href="/accounts/login/">Log In</a>
-            {% endif %}
-            </ul>
-        </nav>
-{% block content %}{% endblock %}
-	</div>
+	{% block menu %}{% endblock %}
+  <div class="container-fluid">
+  {% block content %}{% endblock %}
+  </div>
 
 <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>

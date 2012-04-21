@@ -1,3 +1,14 @@
+#main ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
+#main li.complete{
+    text-decoration: line-through;
+}
+
 #items {
 	margin-top:10px;
 }
@@ -16,7 +27,7 @@ i.move-item{
 }
 #items label, #selected_tags li{
 	padding:5px;
-	line-height:25px; 
+	line-height:25px;
 	margin-left:10px;
 	font-size:16px;
 

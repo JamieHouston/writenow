@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block header %}
+<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet"/>
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    WriteNow.UI.initView();
+});
+</script>
+{% endblock %}
+{% block content %}
+<div id="toppanel">
+
+    <div id="panel" style="display: none; ">
+        <div>
+            <h2>Settings and Stuff</h2>
+        </div>
+    </div>
+
+    <!-- The tab on top -->
+    <div class="tab">
+        <ul class="login">
+            <li class="left">&nbsp;</li>
+            <li id="toggle">
+                <a id="open" class="open" href="#" style="display: block; ">Log In | Register</a>
+                <a id="close" style="display: none; " class="close" href="#">Close Panel</a>
+            </li>
+            <li class="right">&nbsp;</li>
+        </ul>
+    </div>
+
+</div>
+<div class="content-fluid">
+
+</div>
+{% endblock %}

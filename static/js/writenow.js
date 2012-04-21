@@ -27,8 +27,10 @@ WriteNow.UI = WriteNow.UI || {};
 				.on('mouseenter', '#items label', toggleListActions)
 				.on('mouseleave', '#items label', toggleListActions)
 				.on('click', '.tag-action', updateTag)
-				.on('click', '.tag_filter', filterTags);
-
+				.on('click', '.tag_filter', filterTags)
+				.on('click', '#toggle', function(){
+					$('#panel').slideToggle();
+				});
 
 			$newItem = $('#new_item');
 
@@ -47,8 +49,14 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$('#save_new_tag').on('click', newTag);
 
-			initVisualSearch();
+			//initVisualSearch();
 		};
+
+		function runOnEnter($target, action){
+		    $target.on('keyup', function(e){
+		        if (e.keyCode == 13) action();
+		    });
+		}
 
 		function initVisualSearch(){
 			var visualSearch = VS.init({
@@ -63,7 +71,7 @@ WriteNow.UI = WriteNow.UI || {};
 						callback(['first', 'second', 'third']);
 					}
 				}
-    });
+    		});
 		}
 
 		function filterTags(){
@@ -121,8 +129,8 @@ WriteNow.UI = WriteNow.UI || {};
 			$.ajax('add/' + newItem, {
 				success: function(data){
 					item = JSON.parse(data);
-					$('#items_todo').prepend('<label class="checkbox" data-order="' + item.order + '" id="item_' + 
-						item.pk + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + 
+					$('#items_todo').prepend('<label class="checkbox" data-order="' + item.order + '" id="item_' +
+						item.pk + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name +
 						'</span><span class="tag" style="display:none;"><i class="icon-plus tag-action" id="new_{{ item.pk }}"></i>add tag</span><div class="item-actions"><i class="icon-trash delete-item" style="display:none;"></i><i class="icon-move move-item" style="display:none;"></i></div></label>');
 					$('#new_item').val('');
 					showListStatus();
@@ -167,7 +175,7 @@ WriteNow.UI = WriteNow.UI || {};
 				return false;
 			}
 			var complete = $item.is(':checked');
-			
+
 			$listItem = $('#item_' + pk);
 			$listItem.hide().detach();
 			if (complete){
