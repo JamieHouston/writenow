@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content_title %}Login{% endblock %}
+{% block content %}
+<div class="span6">
+    <form class="well" action="." method="post">{% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
+            <label for="username">Password</label>
+            <input type="password" id="password" name="password">
+            <label for="username">EMail</label>
+            <input type="text" id="email" name="email">
+            <div>
+                <button type="submit" class="btn btn-large btn-success">Create Account</button>
+            </div>
+    </form>
+</div>
+{% endblock %}

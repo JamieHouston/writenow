@@ -1,30 +1,56 @@
 from models import *
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from django.core.urlresolvers import reverse
+import pdb
 
 
 def home(request):
     return render_to_response("index.html",
+    #return render_to_response("lists/layout.html",
         None,
         context_instance=RequestContext(request)
     )
+
+
+def sandbox(request):
+    return render_to_response("sandbox.html",
+        None,
+        context_instance=RequestContext(request)
+    )
+
+
+def view_user_list(request, list_name):
+    if request.user.is_authenticated():
+        list = get_or_create_list(request.user, list_name)
+        return render_to_response("lists/list.html", locals(), context_instance=RequestContext(request))
+    url = reverse('login_user')
+    return redirect(url)
+
+
+
+def view_user(request, user_name):
+    user = get_or_create_user(user_name)
+    tags = Tag.objects.filter(owner=user)
+    return render_to_response("lists/user.html", locals(), context_instance=RequestContext(request))
 
 
 def view_list(request, user_name, list_name):
 #    import pdb; pdb.set_trace()
     user = get_or_create_user(user_name)
     list = get_or_create_list(user, list_name)
-
+    tags = list.get_tags()
+    #if list_name == "inbox":
+    #    list_items = Item.objects.all()
+    #else:
+    todo_items = list.item_set.filter(complete=False).order_by('order')
+    complete_items = list.item_set.filter(complete=True).order_by('order')
     user_lists = user.list_set.all().order_by('name')
-    return render_to_response("list.html", {
-            "list": list,
-            "list_items": list.item_set.all(),
-            "user_lists": user_lists
-        }, context_instance=RequestContext(request))
+    return render_to_response("lists/list.html", locals(), context_instance=RequestContext(request))
 
 
 def add_item(request, user_name, list_name, new_item):
@@ -45,6 +71,34 @@ def move_item(request, pk, list_name, user_name):
     item.move(after)
     result = {"name": item.name, "pk": item.pk, "order": item.order}
     return HttpResponse(simplejson.dumps(result))
+
+
+@csrf_exempt
+def tag_action(request, user_name, action):
+    pk = request.POST['pk']
+    user = get_or_create_user(user_name)
+
+    item = Item.objects.get(pk=pk)
+
+    tag_name = request.POST['tag'].lower()
+
+    #pdb.set_trace()
+    tags = Tag.objects.filter(name=tag_name)
+    if len(tags) == 1:
+        tag = tags[0]
+    else:
+        tag = Tag(name=tag_name)
+        tag.owner = user
+        tag.save()
+    if action == "remove":
+        item.tags.remove(tag)
+        item.save()
+    elif action == "add":
+        item.tags.add(tag)
+        item.save()
+    else:
+        return HttpResponse(simplejson.dumps({"status": "fail"}))
+    return HttpResponse(simplejson.dumps({"status": "ok"}))
 
 
 def remove_item(request, user_name, list_name, pk):

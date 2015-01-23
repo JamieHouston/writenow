@@ -1,5 +1,6 @@
 import os
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__)).decode('utf-8').replace('\\', '/')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -24,7 +25,7 @@ DATABASES = {
 LOGIN_REDIRECT_URL = "/l/"
 
 TIME_ZONE = 'America/Chicago'
-
+INTERNAL_IPS = ('127.0.0.1',)
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -91,11 +92,13 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'minidetector.Middleware',
     #'mobiledetector.middleware.MobileDetectionMiddleware',
 )
@@ -106,6 +109,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, "templates"),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -131,8 +135,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'lists',
+    'accounts',
     'south',
-    #'accounts',
+    'debug_toolbar',
+
 )
 
 # A sample logging configuration. The only tangible logging

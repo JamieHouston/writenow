@@ -50,6 +50,14 @@ class SortableModel(models.Model):
         self.save()
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+    owner = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
 class List(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, blank=True, null=True)
@@ -57,8 +65,17 @@ class List(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
+    def get_tags(self):
+        tags = []
+        for item in self.item_set.all():
+            tags.extend(item.tags.all())
+        return tags
+
+    def complete_items(self):
+        return self.item_set.filter(complete=True)
+
     def incomplete_items(self):
-        return self.item_set.filter(complete=False).count()
+        return self.item_set.filter(complete=False)
 
     @models.permalink
     def get_absolute_url(self):
@@ -74,9 +91,14 @@ class Item(SortableModel):
     name = models.CharField(max_length=500)
     complete = models.BooleanField(default=False)
     list = models.ForeignKey(List)
+    tags = models.ManyToManyField(Tag)
+    created_by = models.ForeignKey(User, blank=True, null=True)
 
     def __unicode__(self):
         return unicode(self.name)
+
+    def get_tag_array(self):
+        return self.tags.values_list('id', flat=True)
 
 admin.site.register(List)
 admin.site.register(Item)

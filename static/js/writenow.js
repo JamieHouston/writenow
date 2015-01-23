@@ -1,3 +1,13 @@
+Array.prototype.union =
+  function() {
+    var a = [].concat(this);
+    var l = arguments.length;
+    for(var i=0; i<l; i++) {
+      a = a.concat(arguments[i]);
+    }
+    return a.unique();
+  };
+
 var WriteNow = WriteNow || {};
 WriteNow.UI = WriteNow.UI || {};
 
@@ -9,11 +19,18 @@ WriteNow.UI = WriteNow.UI || {};
 			$('#clear_list').on('click', clearList);
 
 			runOnEnter($('#new_list'), createList);
+			runOnEnter($('#new_tag_name'), newTag);
 
 			$('body')
-				.on('change', 'input[type=checkbox]', updateStatus)
-				.on('click', 'i.delete-item', deleteItem);
-
+				.on('change', '#items input[type=checkbox]', updateStatus)
+				.on('click', 'i.delete-item', deleteItem)
+				.on('mouseenter', '#items label', toggleListActions)
+				.on('mouseleave', '#items label', toggleListActions)
+				.on('click', '.tag-action', updateTag)
+				.on('click', '.tag_filter', filterTags)
+				.on('click', '#toggle', function(){
+					$('#panel').slideToggle();
+				});
 
 			$newItem = $('#new_item');
 
@@ -21,14 +38,73 @@ WriteNow.UI = WriteNow.UI || {};
 
 			$newItem.focus();
 
-			$('#items').sortable({
+			$('div.controls').sortable({
 				handle: 'i.move-item',
 				stop: moveItem,
 				axis: 'y'
 			});
 
 			$('#choose_list').on('change', switchList);
+
+
+			$('#save_new_tag').on('click', newTag);
+
+			//initVisualSearch();
 		};
+
+		function runOnEnter($target, action){
+		    $target.on('keyup', function(e){
+		        if (e.keyCode == 13) action();
+		    });
+		}
+
+		function initVisualSearch(){
+			var visualSearch = VS.init({
+				container : $('.visual_search'),
+				query     : '',
+				callbacks : {
+					search       : function(query, searchCollection) {},
+					facetMatches : function(callback) {
+						callback(['list', 'tag', 'due']);
+					},
+					valueMatches : function(facet, searchTerm, callback) {
+						callback(['first', 'second', 'third']);
+					}
+				}
+    		});
+		}
+
+		function filterTags(){
+
+			var $checked = $('#selected_tags input:checked');
+			if ($checked.length === 0){
+				$('#items label').show();
+			} else {
+				tags = $checked.map(function(){return this.id;});
+				$('#items label').each(function(){
+					var $item = $(this);
+					var found = false;
+					var len = tags.length;
+					while (len--){
+						tag_id = tags[len] * 1;
+						if ($.inArray(tag_id, $item.data("tags")) > -1){
+							found = true;
+						}
+					}
+					if (found){
+						$item.show();
+					} else {
+						$item.hide();
+					}
+				});
+			}
+		}
+
+		function toggleListActions(){
+			$parent = $(this);
+			$parent.find('.tag, .item-actions i').toggle();
+			//$parent.find('.item-actions').toggle();
+		}
 
 		function moveItem(event, ui) {
 			var oldPos = ui.item.data('order');
@@ -53,7 +129,9 @@ WriteNow.UI = WriteNow.UI || {};
 			$.ajax('add/' + newItem, {
 				success: function(data){
 					item = JSON.parse(data);
-					$('#items').append('<label class="checkbox" data-order="' + item.order + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name + '</span><div class="item-actions"><i class="icon-trash delete-item"></i><i class="icon-move move-item"></i></div></label>');
+					$('#items_todo').prepend('<label class="checkbox" data-order="' + item.order + '" id="item_' +
+						item.pk + '"><input type="checkbox" name="complete" id="' + item.pk + '"><span>' + item.name +
+						'</span><span class="tag" style="display:none;"><i class="icon-plus tag-action" id="new_{{ item.pk }}"></i>add tag</span><div class="item-actions"><i class="icon-trash delete-item" style="display:none;"></i><i class="icon-move move-item" style="display:none;"></i></div></label>');
 					$('#new_item').val('');
 					showListStatus();
 				}
@@ -97,12 +175,15 @@ WriteNow.UI = WriteNow.UI || {};
 				return false;
 			}
 			var complete = $item.is(':checked');
+
+			$listItem = $('#item_' + pk);
+			$listItem.hide().detach();
 			if (complete){
-				$item.parent().addClass('complete');
+				$('#items_complete').append($listItem.fadeIn());
+			} else {
+				$('#items_todo').prepend($listItem.fadeIn());
 			}
-			else {
-				$item.parent().removeClass('complete');
-			}
+
 			$.post('update/' + pk + '/',
 				{complete: complete}
 			);
@@ -119,6 +200,40 @@ WriteNow.UI = WriteNow.UI || {};
 			var userName = $('#user_name').text();
 			var newList = $('#new_list').val();
 			location.href = "/" + userName + "/" + newList + "/";
+		}
+
+		function updateTag(){
+			var selector = this;
+			var parts = this.id.split('_');
+			switch (parts[0])
+			{
+				case "new":
+					$('#new_tag_name').val('');
+					$('#new_tag').modal();
+					$('#new_tag_name').focus();
+					$('#new_tag_name').data('pk', parts[1]);
+					break;
+				case "remove":
+					var id = parts[1];
+					var tag = parts[2];
+					var userName = $('#user_name').text();
+					$.post('/' + userName + '/api/tag/remove/',
+						{pk:id, tag:tag}
+					);
+					$(this).parent().remove();
+			}
+			return false;
+		}
+
+		function newTag(){
+			var pk = $('#new_tag_name').data('pk');
+			var tag = $('#new_tag_name').val();
+			var userName = $('#user_name').text();
+			$.post('/' + userName + '/api/tag/add/',
+				{pk:pk, tag:tag}
+			);
+			$('#new_tag').modal('hide');
+			$('#' + pk).next().append('<span class="tag" style="display:none;"><i class="icon-remove tag-action" id="remove_' + pk + '_' + tag  + '"></i>' + tag + '</span>');
 		}
 	}).apply(WriteNow.UI);
 })(jQuery);
