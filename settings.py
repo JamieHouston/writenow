@@ -1,4 +1,5 @@
 import os
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8').replace('\\', '/')
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__)).decode('utf-8').replace('\\', '/')
 
